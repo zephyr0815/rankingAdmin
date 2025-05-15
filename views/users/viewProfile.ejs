@@ -1,0 +1,410 @@
+<div class="row gy-4">
+    <div class="col-lg-4">
+        <div class="user-grid-card position-relative border radius-16 overflow-hidden bg-base h-100">
+            <img src="/images/user-grid/user-grid-bg1.png" alt="" class="w-100 object-fit-cover">
+            <div class="pb-24 ms-16 mb-24 me-16  mt--100">
+                <div class="text-center border border-top-0 border-start-0 border-end-0">
+                    <img src="/images/user-grid/user-grid-img14.png" alt="" class="border br-white border-width-2-px w-200-px h-200-px rounded-circle object-fit-cover">
+                    <h6 class="mb-0 mt-16">Jacob Jones</h6>
+                    <span class="text-secondary-light mb-16">ifrandom@gmail.com</span>
+                </div>
+                <div class="mt-24">
+                    <h6 class="text-xl mb-16">Personal Info</h6>
+                    <ul>
+                        <li class="d-flex align-items-center gap-1 mb-12">
+                            <span class="w-30 text-md fw-semibold text-primary-light">Username</span>
+                            <span id="profile-username" class="w-70 text-secondary-light fw-medium">-</span>
+                        </li>
+                        <li class="d-flex align-items-center gap-1 mb-12">
+                            <span class="w-30 text-md fw-semibold text-primary-light">Email</span>
+                            <span id="profile-email" class="w-70 text-secondary-light fw-medium">-</span>
+                        </li>
+                        <li class="d-flex align-items-center gap-1 mb-12">
+                            <span class="w-30 text-md fw-semibold text-primary-light">Phone Number</span>
+                            <span id="profile-phone" class="w-70 text-secondary-light fw-medium">-</span>
+                        </li>
+                        <li class="d-flex align-items-center gap-1 mb-12">
+                            <span class="w-30 text-md fw-semibold text-primary-light">Role</span>
+                            <span id="profile-role" class="w-70 text-secondary-light fw-medium">-</span>
+                        </li>
+                        <li class="d-flex align-items-center gap-1 mb-12">
+                            <span class="w-30 text-md fw-semibold text-primary-light">Status</span>
+                            <span id="profile-status" class="w-70 text-secondary-light fw-medium">-</span>
+                        </li>
+                        <li class="d-flex align-items-center gap-1 mb-12">
+                            <span class="w-30 text-md fw-semibold text-primary-light">Balance</span>
+                            <span id="profile-balance" class="w-70 text-secondary-light fw-medium">-</span>
+                        </li>
+                    </ul>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="card h-100">
+            <div class="card-body p-24">
+                <ul class="nav border-gradient-tab nav-pills mb-20 d-inline-flex" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link d-flex align-items-center px-24 active" id="pills-edit-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-edit-profile" type="button" role="tab" aria-controls="pills-edit-profile" aria-selected="true">
+                            Edit Profile
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link d-flex align-items-center px-24" id="pills-change-passwork-tab" data-bs-toggle="pill" data-bs-target="#pills-change-passwork" type="button" role="tab" aria-controls="pills-change-passwork" aria-selected="false" tabindex="-1">
+                            Change Password
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link d-flex align-items-center px-24" id="pills-notification-tab" data-bs-toggle="pill" data-bs-target="#pills-notification" type="button" role="tab" aria-controls="pills-notification" aria-selected="false" tabindex="-1">
+                            Notification Settings
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-edit-profile" role="tabpanel" aria-labelledby="pills-edit-profile-tab" tabindex="0">
+                        <h6 class="text-md text-primary-light mb-16">Profile Image</h6>
+                        <!-- Upload Image Start -->
+                        <div class="mb-24 mt-16">
+                            <div class="avatar-upload">
+                                <div class="avatar-edit position-absolute bottom-0 end-0 me-24 mt-16 z-1 cursor-pointer">
+                                    <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" hidden>
+                                    <label for="imageUpload" class="w-32-px h-32-px d-flex justify-content-center align-items-center bg-primary-50 text-primary-600 border border-primary-600 bg-hover-primary-100 text-lg rounded-circle">
+                                        <iconify-icon icon="solar:camera-outline" class="icon"></iconify-icon>
+                                    </label>
+                                </div>
+                                <div class="avatar-preview">
+                                    <div id="imagePreview" style="background-image: url('/images/user-grid/user-grid-img14.png');">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Upload Image End -->
+                        <form id="editUserForm" action="#">
+                            <input type="hidden" id="uid-hidden">
+
+                            <div class="row">
+                              <!-- Username -->
+                              <div class="col-sm-6">
+                                <div class="mb-20">
+                                  <label for="username" class="form-label fw-semibold text-primary-light text-sm mb-8">Username <span class="text-danger-600">*</span></label>
+                                  <input type="text" class="form-control radius-8" id="username" placeholder="Enter Username">
+                                </div>
+                              </div>
+                          
+                              <!-- Name -->
+                              <div class="col-sm-6">
+                                <div class="mb-20">
+                                  <label for="name" class="form-label fw-semibold text-primary-light text-sm mb-8">Name <span class="text-danger-600">*</span></label>
+                                  <input type="text" class="form-control radius-8" id="name" placeholder="Enter Name">
+                                </div>
+                              </div>
+                          
+                              <!-- Email -->
+                              <div class="col-sm-6">
+                                <div class="mb-20">
+                                  <label for="email" class="form-label fw-semibold text-primary-light text-sm mb-8">Email <span class="text-danger-600">*</span></label>
+                                  <input type="email" class="form-control radius-8" id="email" placeholder="Enter Email Address">
+                                </div>
+                              </div>
+                          
+                              <!-- Phone -->
+                              <div class="col-sm-6">
+                                <div class="mb-20">
+                                  <label for="number" class="form-label fw-semibold text-primary-light text-sm mb-8">Phone</label>
+                                  <input type="text" class="form-control radius-8" id="number" placeholder="Enter Phone Number">
+                                </div>
+                              </div>
+                          
+                              <!-- Role -->
+                              <div class="col-sm-6">
+                                <div class="mb-20">
+                                  <label for="depart" class="form-label fw-semibold text-primary-light text-sm mb-8">Role <span class="text-danger-600">*</span></label>
+                                  <select class="form-control radius-8 form-select" id="user-level">
+                                    <option value="">Select Role</option>
+                                        <option value="1">Admin</option>
+                                        <option value="2">Player</option>
+                                        <option value="3">Manager</option>
+                                        <option value="4">Cashier</option>
+                                  </select>
+                                </div>
+                              </div>
+                          
+                              <!-- Status -->
+                              <div class="col-sm-6">
+                                <div class="mb-20">
+                                  <label for="Language" class="form-label fw-semibold text-primary-light text-sm mb-8">Status <span class="text-danger-600">*</span></label>
+                                  <select class="form-control radius-8 form-select" id="user-status">
+                                    <option value="">Select Status</option>
+                                    <option value="1">Active</option>
+                                    <option value="10">Pending</option>
+                                    <option value="11">Rejected</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                          
+                            <!-- Action Buttons -->
+                            <div class="d-flex align-items-center justify-content-center gap-3">
+                              <button type="button" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-md px-56 py-11 radius-8">
+                                Cancel
+                              </button>
+                              <button type="submit" class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8">
+                                Save
+                              </button>
+                            </div>
+                          </form>
+                          
+                    </div>
+
+                    <div class="tab-pane fade" id="pills-change-passwork" role="tabpanel" aria-labelledby="pills-change-passwork-tab" tabindex="0">
+                        <form id="changePasswordForm">
+                          <div class="mb-20">
+                            <label for="your-password" class="form-label fw-semibold text-primary-light text-sm mb-8">
+                              New Password <span class="text-danger-600">*</span>
+                            </label>
+                            <div class="position-relative">
+                              <input type="password" class="form-control radius-8" id="your-password" placeholder="Enter New Password*">
+                              <span class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light" data-toggle="#your-password"></span>
+                            </div>
+                          </div>
+                          <div class="mb-20">
+                            <label for="confirm-password" class="form-label fw-semibold text-primary-light text-sm mb-8">
+                              Confirmed Password <span class="text-danger-600">*</span>
+                            </label>
+                            <div class="position-relative">
+                              <input type="password" class="form-control radius-8" id="confirm-password" placeholder="Confirm Password*">
+                              <span class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light" data-toggle="#confirm-password"></span>
+                            </div>
+                          </div>
+                      
+                          <div class="d-flex justify-content-center gap-3">
+                            
+                            <button type="submit" class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8">
+                              Change Password
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                      
+
+                    <div class="tab-pane fade" id="pills-notification" role="tabpanel" aria-labelledby="pills-notification-tab" tabindex="0">
+                        <div class="form-switch switch-primary py-12 px-16 border radius-8 position-relative mb-16">
+                            <label for="companzNew" class="position-absolute w-100 h-100 start-0 top-0"></label>
+                            <div class="d-flex align-items-center gap-3 justify-content-between">
+                                <span class="form-check-label line-height-1 fw-medium text-secondary-light">Company News</span>
+                                <input class="form-check-input" type="checkbox" role="switch" id="companzNew">
+                            </div>
+                        </div>
+                        <div class="form-switch switch-primary py-12 px-16 border radius-8 position-relative mb-16">
+                            <label for="pushNotifcation" class="position-absolute w-100 h-100 start-0 top-0"></label>
+                            <div class="d-flex align-items-center gap-3 justify-content-between">
+                                <span class="form-check-label line-height-1 fw-medium text-secondary-light">Push Notification</span>
+                                <input class="form-check-input" type="checkbox" role="switch" id="pushNotifcation" checked>
+                            </div>
+                        </div>
+                        <div class="form-switch switch-primary py-12 px-16 border radius-8 position-relative mb-16">
+                            <label for="weeklyLetters" class="position-absolute w-100 h-100 start-0 top-0"></label>
+                            <div class="d-flex align-items-center gap-3 justify-content-between">
+                                <span class="form-check-label line-height-1 fw-medium text-secondary-light">Weekly News Letters</span>
+                                <input class="form-check-input" type="checkbox" role="switch" id="weeklyLetters" checked>
+                            </div>
+                        </div>
+                        <div class="form-switch switch-primary py-12 px-16 border radius-8 position-relative mb-16">
+                            <label for="meetUp" class="position-absolute w-100 h-100 start-0 top-0"></label>
+                            <div class="d-flex align-items-center gap-3 justify-content-between">
+                                <span class="form-check-label line-height-1 fw-medium text-secondary-light">Meetups Near you</span>
+                                <input class="form-check-input" type="checkbox" role="switch" id="meetUp">
+                            </div>
+                        </div>
+                        <div class="form-switch switch-primary py-12 px-16 border radius-8 position-relative mb-16">
+                            <label for="orderNotification" class="position-absolute w-100 h-100 start-0 top-0"></label>
+                            <div class="d-flex align-items-center gap-3 justify-content-between">
+                                <span class="form-check-label line-height-1 fw-medium text-secondary-light">Orders Notifications</span>
+                                <input class="form-check-input" type="checkbox" role="switch" id="orderNotification" checked>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="module">
+    import { adminUser } from '/js/apiAdmin.js';
+    
+    const idx = new URLSearchParams(window.location.search).get('idx');
+    
+    const roleMap = {
+      1: 'Admin',
+      2: 'Player',
+      3: 'Manager',
+      4: 'Cashier'
+    };
+    
+    const statusMap = {
+      1: 'Active',
+      10: 'Pending',
+      11: 'Rejected'
+    };
+    
+    async function loadProfile() {
+      if (!idx) return;
+    
+      try {
+        const user = await adminUser.getInfoByIdx(idx);
+    
+        document.querySelector('.user-grid-card h6').textContent = user.nick || '-';
+        document.querySelector('.user-grid-card span.text-secondary-light').textContent = user.email || '-';
+        document.getElementById('profile-username').textContent = `: ${user.uid || '-'}`;
+        document.getElementById('profile-email').textContent = `: ${user.email || '-'}`;
+        document.getElementById('profile-phone').textContent = `: ${user.phone || '-'}`;
+        document.getElementById('profile-role').textContent = `: ${roleMap[user.level] || '-'}`;
+        document.getElementById('profile-status').textContent = `: ${statusMap[user.state] || '-'}`;
+        document.getElementById('profile-balance').textContent =
+          user.g_chip !== undefined && user.g_chip > 0
+            ? `: ₱${parseInt(user.g_chip).toLocaleString()}`
+            : ': -';
+    
+        if (user.photo) {
+          document.querySelector('.user-grid-card img.rounded-circle').src = user.photo;
+          document.getElementById('imagePreview').style.backgroundImage = `url('${user.photo}')`;
+        }
+    
+        document.getElementById('username').value = user.uid || '';
+        document.getElementById('name').value = user.nick || '';
+        document.getElementById('email').value = user.email || '';
+        document.getElementById('number').value = user.phone || '';
+        document.getElementById('user-level').value = user.level || '';
+        document.getElementById('user-status').value = user.state || '';
+      } catch (err) {
+        console.error('Failed to load user profile', err);
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', function () {
+      loadProfile();
+    
+      const editUserForm = document.getElementById('editUserForm');
+      if (editUserForm) {
+        editUserForm.addEventListener('submit', async function (e) {
+          e.preventDefault();
+    
+          if (!idx) {
+            Swal.fire({ icon: 'error', title: 'Error', text: 'Missing internal ID' });
+            return;
+          }
+    
+          const formData = {
+            idx: idx,
+            uid: document.getElementById('username').value,
+            nick: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('number').value,
+            level: document.getElementById('user-level').value,
+            state: document.getElementById('user-status').value
+          };
+    
+          if (!formData.uid || !formData.nick || !formData.email || !formData.level || !formData.state) {
+            Swal.fire({ icon: 'error', title: 'Validation Error', text: 'Please fill in all required fields' });
+            return;
+          }
+    
+          const result = await Swal.fire({
+            title: 'Confirm Update',
+            text: 'Are you sure you want to update this profile?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, update it!',
+            cancelButtonText: 'Cancel'
+          });
+    
+          if (!result.isConfirmed) return;
+    
+          try {
+            await adminUser.updateFull(formData.idx, formData);
+            Swal.fire({ icon: 'success', title: 'Success', text: 'Profile updated successfully', timer: 2000, showConfirmButton: false });
+            loadProfile();
+          } catch (err) {
+            console.error('Failed to update profile', err);
+            let errorMessage = 'Failed to update profile. Please try again.';
+            if (err.response?.data?.reason) {
+              errorMessage = err.response.data.reason;
+            }
+            Swal.fire({ icon: 'error', title: 'Error', text: errorMessage });
+          }
+        });
+      }
+    
+      const changePasswordForm = document.getElementById('changePasswordForm');
+      if (changePasswordForm) {
+        changePasswordForm.addEventListener('submit', async function (e) {
+          e.preventDefault();
+    
+          const newPass = document.getElementById('your-password').value.trim();
+          const confirmPass = document.getElementById('confirm-password').value.trim();
+    
+          if (!newPass || !confirmPass) {
+            return Swal.fire('Error', 'Please fill in both password fields.', 'error');
+          }
+    
+          if (newPass !== confirmPass) {
+            return Swal.fire('Error', 'Passwords do not match.', 'error');
+          }
+    
+          try {
+            const confirm = await Swal.fire({
+              title: 'Confirm Password Change',
+              text: 'Are you sure you want to change the password?',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonText: 'Yes, change it'
+            });
+    
+            if (confirm.isConfirmed) {
+                await adminUser.changePassword(idx, {
+                  password: newPass,
+                  confirm: confirmPass
+                });
+              Swal.fire('Success', 'Password changed successfully.', 'success');
+              document.getElementById('your-password').value = '';
+              document.getElementById('confirm-password').value = '';
+            }
+          } catch (err) {
+            console.error('Change password error:', err);
+            Swal.fire('Error', 'Failed to change password.', 'error');
+          }
+        });
+      }
+    
+      const imageUpload = document.getElementById('imageUpload');
+      if (imageUpload) {
+        imageUpload.addEventListener('change', function () {
+          if (this.files && this.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              document.getElementById('imagePreview').style.backgroundImage = `url(${e.target.result})`;
+              document.getElementById('imagePreview').style.display = 'none';
+              $('#imagePreview').fadeIn(650);
+            };
+            reader.readAsDataURL(this.files[0]);
+          }
+        });
+      }
+    
+      function initializePasswordToggle(toggleSelector) {
+        $(toggleSelector).on('click', function () {
+          $(this).toggleClass('ri-eye-off-line');
+          const input = $($(this).attr('data-toggle'));
+          input.attr('type', input.attr('type') === 'password' ? 'text' : 'password');
+        });
+      }
+      initializePasswordToggle('.toggle-password');
+    });
+    </script>
+    
+    

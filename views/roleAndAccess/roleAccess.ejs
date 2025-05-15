@@ -1,0 +1,114 @@
+<div class="card h-100 p-0 radius-12">
+    <div class="card-header border-bottom bg-base py-16 px-24 d-flex align-items-center flex-wrap gap-3 justify-content-between">
+      <div class="d-flex align-items-center flex-wrap gap-3">
+        <span class="text-md fw-medium text-secondary-light mb-0">Show</span>
+        <select id="perPageSelect" class="form-select form-select-sm w-auto ps-12 py-6 radius-12 h-40-px">
+          <% for (let n = 1; n <= 10; n++) { %>
+            <option value="<%= n %>" <%= n === 10 ? 'selected' : '' %>><%= n %></option>
+          <% } %>
+        </select>
+        <form class="navbar-search d-inline-block">
+          <input type="text" class="bg-base h-40-px w-auto" id="searchInput" placeholder="Search">
+          <iconify-icon icon="ion:search-outline" class="icon"></iconify-icon>
+        </form>
+      </div>
+      <button type="button" class="btn btn-primary text-sm btn-sm px-12 py-12 radius-8 d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
+        Add New Role
+      </button>
+    </div>
+  
+    <div class="card-body p-24">
+      <div class="table-responsive scroll-sm">
+        <table id="roleTable" class="table bordered-table sm-table mb-0">
+          <thead>
+            <tr>
+              <th>S.L</th>
+              <th>Create Date</th>
+              <th>Role</th>
+              <th>Description</th>
+              <th class="text-center">Status</th>
+              <th class="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+ 
+  
+  <script type="module">
+    import { adminUser } from '/js/apiAdmin.js';
+  
+    const ROLE_MAP = {
+      1: 'Player',
+      2: 'Guest',
+      3: 'Moderator',
+      9: 'Admin'
+    };
+  
+    $(document).ready(function () {
+      const table = $('#roleTable').DataTable({
+        pageLength: 10,
+        lengthChange: false,
+        searching: true,
+        info: true,
+        responsive: true,
+        ordering: false,
+        processing: true,
+        serverSide: true,
+        dom: 'lrtip',
+        ajax: async (data, callback) => {
+          const page = Math.floor(data.start / data.length) + 1;
+          const res = await adminUser.getRoleList({
+            page,
+            per: data.length,
+            search: data.search.value || ''
+          });
+  
+          callback({
+            draw: data.draw,
+            recordsTotal: res.total,
+            recordsFiltered: res.total,
+            data: res.rows.map((r, i) => [
+              '<div class="form-check style-check d-flex align-items-center"><input class="form-check-input radius-4 border input-form-dark" type="checkbox"></div> ' + (data.start + i + 1),
+              '-', // no date info from backend
+              r.role,
+                `<p class="max-w-500-px">${r.description}</p>`,
+
+              `<span class="bg-success-focus text-success-600 border border-success-main px-24 py-4 radius-4 fw-medium text-sm">Active</span>`,
+              `<div class="d-flex align-items-center gap-10 justify-content-center">
+                <button class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle btn-edit" data-level="${r.level}">
+                  <iconify-icon icon="lucide:edit"></iconify-icon>
+                </button>
+                <button class="bg-danger-focus text-danger-600 bg-hover-danger-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle btn-delete" data-level="${r.level}">
+                  <iconify-icon icon="fluent:delete-24-regular"></iconify-icon>
+                </button>
+              </div>`
+            ])
+          });
+        }
+      });
+  
+      $('#searchInput').on('keyup', function () {
+        table.search(this.value).draw();
+      });
+  
+      $('#perPageSelect').on('change', function () {
+        table.page.len(+this.value).draw();
+      });
+  
+      $('#roleTable tbody').on('click', '.btn-edit', function () {
+        const level = $(this).data('level');
+        console.log('Edit role level:', level);
+      });
+  
+      $('#roleTable tbody').on('click', '.btn-delete', function () {
+        const level = $(this).data('level');
+        console.log('Delete role level:', level);
+      });
+    });
+  </script>
+  

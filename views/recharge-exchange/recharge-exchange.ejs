@@ -1,0 +1,276 @@
+<div class="card basic-data-table">
+    <div class="card-header">
+        <h5 class="card-title mb-0">
+            Recharge Exchange List
+        </h5>
+    </div>
+    <div class="card-body">
+        <table class="table bordered-table mb-0" id="rechargeExchange_tbl" data-page-length='10'>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Amount</th>
+                    <th>Request</th> 
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                  
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    /* center everything in your rechargeExchange table */
+    #rechargeExchange_tbl th,
+    #rechargeExchange_tbl td {
+      text-align: center !important;
+      vertical-align: middle;
+    }
+  </style>
+
+
+
+<script type="module">
+    import { adminUser } from '/js/apiAdmin.js';
+  
+    $(async function () {
+      console.log('⏳ Starting Recharge Exchange DataTable init…');
+  
+      try {
+        console.log('📡 Fetching recharge requests…');
+        const res = await adminUser.getRechargeRequests({});
+        console.log('✅ API response:', res);
+  
+        const data = res.data || [];
+        console.log(`📊 Retrieved ${data.length} rows`);
+  
+        console.log('🛠️ Initializing DataTable…');
+        const table = $('#rechargeExchange_tbl').DataTable({
+          data,
+          pageLength: 10,
+          order: [[ 0, 'desc' ]],
+          columns: [
+          {
+      data: 'created_at',
+      render: (data, type, row, meta) => {
+        const d = new Date(data);
+        if (type === 'display' || type === 'filter') {
+          // human-readable
+          return d.toLocaleString('en-GB', {
+            month:  'short',   // “Apr”
+            day:    'numeric', // “23”
+            year:   'numeric', // “2025”
+            hour:   '2-digit',
+            minute: '2-digit',
+            hour12: true
+          }).replace(/,/g,'');
+        }
+        // for 'sort' and 'type' use the epoch ms
+        return d.getTime();
+      }
+    },
+            { data: 'uid' },
+            {
+              data: 'req_chip',
+              render: amt => {
+                const formatted = Number(amt).toLocaleString('en-US');
+                console.log('💰 Rendering amount:', amt, '→', formatted);
+                return formatted;
+              }
+            },
+
+            {
+            data: 'kind',
+            render: kind => {
+                // map numeric codes to labels
+                const labels = {
+                0: 'Recharge',
+                1: 'Exchange'
+                };
+                const label = labels[kind] ?? 'unknown';
+                console.log('🏷️ Rendering status badge for code:', kind, 'label:', label);
+
+                // pick class based on label
+                const cls =
+                label === 'Recharge' ? 'info'
+                : label === 'Exchange' ? 'success'
+                : 'warning';
+
+                return `
+                <span class="bg-${cls}-focus text-${cls}-main px-24 py-4 rounded-pill fw-medium text-sm">
+                    ${label}
+                </span>
+                `;
+            }
+            },
+           
+            {
+            data: 'status',
+            render: status => {
+                // map numeric codes to labels
+                const labels = {
+                0: 'Pending',
+                1: 'Approved',
+                2: 'Rejected'
+                };
+                const label = labels[status] ?? 'unknown';
+                console.log('🏷️ Rendering status badge for code:', status, 'label:', label);
+
+                // pick class based on label
+                const cls =
+                label === 'Approved' ? 'success'
+                : label === 'Rejected' ? 'danger'
+                : 'warning';
+
+                return `
+                <span class="bg-${cls}-focus text-${cls}-main px-24 py-4 rounded-pill fw-medium text-sm">
+                    ${label}
+                </span>
+                `;
+            }
+            },
+            {
+                data: null,
+                orderable: false,
+                render: row => {
+                    console.log('🔧 Rendering action buttons for row idx:', row.idx, 'status:', row.status);
+                    const isFinal = row.status === 1 || row.status === 2;
+
+                    const approveClasses = [
+                    'approve-btn',
+                    'w-32-px','h-32-px',
+                    'bg-success-focus','text-success-600',
+                    'rounded-circle','d-inline-flex','align-items-center','justify-content-center'
+                    ].join(' ');
+                    const rejectClasses = [
+                    'reject-btn',
+                    'w-32-px','h-32-px',
+                    'bg-danger-focus','text-danger-main',
+                    'rounded-circle','d-inline-flex','align-items-center','justify-content-center'
+                    ].join(' ');
+
+                    const disabledAttrs = isFinal
+                    ? 'style="opacity:0.5;pointer-events:none;"'
+                    : '';
+
+                    return `
+                    <a href="javascript:void(0)" data-id="${row.idx}" class="${approveClasses}" ${disabledAttrs}>
+                        <iconify-icon icon="iconamoon:check"></iconify-icon>
+                    </a>
+                    <a href="javascript:void(0)" data-id="${row.idx}" class="${rejectClasses}" ${disabledAttrs}>
+                        <iconify-icon icon="lucide:x"></iconify-icon>
+                    </a>
+                    `;
+                }
+                }
+
+          ]
+        });
+        console.log('✅ DataTable initialized:', table);
+  
+        // action handlers
+            // Approve handler with Swal
+        $('#rechargeExchange_tbl').on('click', '.approve-btn', async function () {
+        const id    = $(this).data('id');
+        const $tr   = $(this).closest('tr');
+        const row   = table.row($tr);
+        const data  = row.data();
+
+        const result = await Swal.fire({
+            title: 'Approve this request?',
+            text: 'This will add the requested amount to the user’s balance.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, approve',
+            cancelButtonText: 'Cancel',
+            reverseButtons: true
+        });
+
+        if (!result.isConfirmed) return;
+
+        try {
+            await adminUser.approveRecharge(id);
+            Swal.fire({
+            icon: 'success',
+            title: 'Approved!',
+            text: 'The recharge has been approved.'
+            });
+
+            // 1) Update the status field in the row's data
+            data.status = 1;
+
+            // 2) Invalidate the row's cache, write new data, and redraw just that row
+            row.data(data).invalidate().draw(false);
+
+        } catch (e) {
+            console.error('❌ approveRecharge error:', e);
+            Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: e.message || 'Failed to approve request.'
+            });
+        }
+        });
+
+
+  
+        $('#rechargeExchange_tbl').on('click', '.reject-btn', async function () {
+  const id   = $(this).data('id');
+  const $tr  = $(this).closest('tr');
+  const row  = table.row($tr);
+  const data = row.data();
+
+  const result = await Swal.fire({
+    title: 'Reject this request?',
+    text: 'This will mark the recharge as rejected.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, reject',
+    cancelButtonText: 'Cancel',
+    reverseButtons: true
+  });
+  if (!result.isConfirmed) return;
+
+  try {
+    await adminUser.rejectRecharge(id);
+    await Swal.fire({
+      icon: 'success',
+      title: 'Rejected!',
+      text: 'The recharge has been rejected.'
+    });
+
+    // 1) Update the status field in the row's data
+    data.status = 2;
+
+    // 2) Invalidate the row's cache, write new data, and redraw just that row
+    row.data(data).invalidate().draw(false);
+
+  } catch (e) {
+    console.error('❌ rejectRecharge error:', e);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: e.message || 'Failed to reject request.'
+    });
+  }
+});
+
+  
+        $('#rechargeExchange_tbl').on('click', '.delete-btn', function () {
+          const id = $(this).data('id');
+          console.log('🗑️ Delete clicked for id=', id);
+          // implement your delete logic here…
+        });
+  
+      } catch (err) {
+        console.error('❌ Error loading recharge list:', err);
+        alert(err.message || 'Failed to load data.');
+      }
+    });
+  </script>

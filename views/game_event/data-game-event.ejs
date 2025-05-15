@@ -1,0 +1,1083 @@
+<!-- Game Table -->
+<div class="card h-100 p-0 radius-12">
+  <div class="card-header border-bottom bg-base py-16 px-24">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+      
+      <div class="d-flex align-items-center gap-2">
+        <span class="text-md fw-medium text-secondary-light">Show</span>
+        <select class="form-select form-select-sm w-auto ps-12 py-6 radius-12 h-40-px" id="perPageSelect">
+          <option value="10" selected>10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+        <input id="searchInput" type="text" class="form-control bg-base h-40-px w-auto" placeholder="Search" />
+      
+        <ul class="nav nav-tabs border-0 flex-wrap gap-2 mb-0" id="gameTypeTabs">
+          <li class="nav-item">
+            <button class="nav-link tab-all active px-24 py-8 radius-8" data-bs-toggle="tab" data-type="all">
+              <span class="bg-secondary-focus text-secondary-main px-24 py-4 rounded-pill fw-medium text-sm">All</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link tab-daily px-24 py-8 radius-8" data-bs-toggle="tab" data-type="2">
+              <span class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Daily</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link tab-sitngo px-24 py-8 radius-8" data-bs-toggle="tab" data-type="3">
+              <span class="bg-warning-focus text-warning-main px-24 py-4 rounded-pill fw-medium text-sm">Sit & Go</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link tab-monthly px-24 py-8 radius-8" data-bs-toggle="tab" data-type="1">
+              <span class="bg-info-focus text-info-main px-24 py-4 rounded-pill fw-medium text-sm">Monthly</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+  
+      <button type="button" class="btn btn-primary text-sm btn-sm px-12 py-12 radius-8 d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#createGameModal">
+        <iconify-icon icon="fa6-regular:square-plus" class="icon text-lg line-height-1"></iconify-icon>
+        Create Game
+      </button>
+      
+    </div>
+  </div>
+  
+  
+  
+  <div class="card-body p-32">
+    <div class="table-responsive table-fit-wrapper">
+      <table class="table bordered-table table-striped mb-0" id="gameTable" data-page-length='10' style="table-layout:auto;width:100%;min-width:900px;">
+        <thead>
+          <tr>
+            <th>Game Category</th>
+            <th>Tournament Type</th>
+            <th>Game Rules</th>
+            <th>Game Name</th>
+            <th>Start Time</th>
+            <th>Game Length</th>
+            <th>Starting Chips</th>
+            <th>Prize Pool</th>
+            <th>Entrance Fee</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- View Prizes Modal -->
+<div class="modal fade" id="viewPrizesModal" tabindex="-1" aria-labelledby="viewPrizesModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewPrizesModalLabel">Game Prizes & Prize Pool</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>Prize Pool</span>
+            <span id="viewPrizePool" class="fw-bold"></span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>1st Prize</span>
+            <span id="viewFirstPrize" class="prize-value"></span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>2nd Prize</span>
+            <span id="viewSecondPrize" class="prize-value"></span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>3rd Prize</span>
+            <span id="viewThirdPrize" class="prize-value"></span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>4th Prize</span>
+            <span id="viewFourthPrize" class="prize-value"></span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>Max People</span>
+            <span id="viewMaxPeople" class="fw-bold"></span>
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Create Game Modal -->
+<div class="modal fade" id="createGameModal" tabindex="-1" aria-labelledby="createGameModalLabel" data-bs-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createGameModalLabel">Create Game</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="createGameForm" action="/game-event/create" method="POST">
+        <div class="modal-body">
+          
+          <!-- 1) Tournament Type -->
+          <div class="row g-3 mb-3">
+            <div class="col">
+              <label for="tournamentType" class="form-label">Tournament Type</label>
+              <select class="form-select" id="tournamentType" name="tournamentType" required>
+                <option value="" disabled selected>Select Tournament Type</option>
+                <option value="1">Non-cash Tournament</option>
+                <option value="2">Cash-on Tournament</option>
+              </select>
+            </div>
+          </div>
+          
+          <!-- Game Type (styled radios) -->
+          <div class="d-flex align-items-center mb-3 d-none" id="gameTypeRow">
+            <label class="me-4 fw-semibold mb-0">Game Type:</label>
+            <div class="form-check me-3">
+              <input class="form-check-input" type="radio" name="gameType2" id="gameTypeWinRate" value="1">
+              <label class="form-check-label" for="gameTypeWinRate">Win Rate</label>
+            </div>
+            <div class="form-check me-3">
+              <input class="form-check-input" type="radio" name="gameType2" id="gameTypeWinLoss" value="2">
+              <label class="form-check-label" for="gameTypeWinLoss">Win Loss</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="gameType2" id="gameTypeWinStreak" value="3">
+              <label class="form-check-label" for="gameTypeWinStreak">Win Streak</label>
+            </div>
+          </div>
+          <div class="row g-3">
+            <div class="col mb-3">
+              <label for="gameType" class="form-label">Event Type</label>
+              <select class="form-select" id="gameType" name="gamekind" required>
+                <option value="" disabled selected>Select Game Type</option>
+                <option value="1">Monthly Event</option>
+                <option value="2">Daily Event</option>
+                <option value="3">Sit & Go Event</option>
+              </select>
+            </div>
+            <div class="col mb-3">
+              <label for="eventName" class="form-label">Event Name</label>
+              <input type="text" class="form-control" id="eventName" name="name" required>
+            </div>
+            <div class="col mb-3">
+              <label for="entranceFee" class="form-label">Entrance Fee ($)</label>
+              <input type="text" inputmode="numeric" pattern="[0-9,]*"
+                     class="form-control" id="entranceFee" name="entranceFee" required>
+            </div>
+            
+          </div>
+        
+          <!-- Start Date & Start Time -->
+          <div class="row g-3">
+            <div class="col mb-3">
+              <label for="startDate" class="form-label">Start Date</label>
+              <input type="date" class="form-control" id="startDate" name="startDate" required>
+            </div>
+            <div class="col mb-3">
+              <label for="startTime" class="form-label">Start Time</label>
+              <input type="time" class="form-control" id="startTime" name="startTime" required>
+            </div>
+         <!-- Max People & Game Length -->
+         
+          <div class="col mb-3">
+            <label for="gameLength" class="form-label">Game Length (minutes)</label>
+            <input type="number" class="form-control" id="gameLength" name="gameLength" required>
+          </div>
+        </div>
+          <!-- Entrance Fee & Prize Pool -->
+          <div class="row g-3">
+            <div class="col mb-3">
+              <label for="maxPeople" class="form-label">Max People(0 = Unlimited)</label>
+              <input type="number" class="form-control" id="maxPeople" name="maxPeople" required>
+            </div>
+            <div class="col mb-3">
+              <label for="startingChips" class="form-label">Starting Chips</label>
+              <input type="text" inputmode="numeric" pattern="[0-9,]*"
+                     class="form-control" id="startingChips" name="startingChips" required>
+            </div>
+            <div class="col mb-3">
+              <label for="prizePool" class="form-label">Prize Pool ($)</label>
+              <input type="text" inputmode="numeric" pattern="[0-9,]*"
+                     class="form-control" id="prizePool" name="prizePool" required>
+            </div>
+            <div class="col mb-3">
+              <label for="buyIn" class="form-label">Buy In ($)</label>
+              <input type="text" inputmode="numeric" pattern="[0-9,]*"
+                     class="form-control" id="buyIn" name="buyIn" required>
+            </div>
+          </div>
+          
+          <!-- 1st Prize -->
+          <div class="mb-3">
+            <label class="form-label">1st Prize</label>
+            <div class="row g-2 align-items-center">
+              <div class="col">
+                <input type="text" inputmode="numeric" pattern="[0-9,]*"
+                       class="form-control prize-amount" id="firstPrizeAmount" name="firstPrizeAmount"
+                       placeholder="Amount ($)" />
+              </div>
+              <div class="col-auto text-center">
+                <span class="fw-bold text-secondary">or</span>
+              </div>
+              <div class="col">
+                <input type="text" inputmode="numeric" pattern="[0-9,]*"
+                       class="form-control" id="firstPrizePercent" name="firstPrizePercent"
+                       placeholder="Percentage (%)" />
+              </div>
+            </div>
+          </div>
+        
+          <!-- 2nd Prize -->
+          <div class="mb-3">
+            <label class="form-label">2nd Prize</label>
+            <div class="row g-2 align-items-center">
+              <div class="col">
+                <input type="text" inputmode="numeric" pattern="[0-9,]*"
+                       class="form-control prize-amount" id="secondPrizeAmount" name="secondPrizeAmount"
+                       placeholder="Amount ($)" />
+              </div>
+              <div class="col-auto text-center">
+                <span class="fw-bold text-secondary">or</span>
+              </div>
+              <div class="col">
+                <input type="text" inputmode="numeric" pattern="[0-9,]*"
+                       class="form-control" id="secondPrizePercent" name="secondPrizePercent"
+                       placeholder="Percentage (%)" />
+              </div>
+            </div>
+          </div>
+        
+          <!-- 3rd Prize -->
+          <div class="mb-3">
+            <label class="form-label">3rd Prize</label>
+            <div class="row g-2 align-items-center">
+              <div class="col">
+                <input type="text" inputmode="numeric" pattern="[0-9,]*"
+                       class="form-control prize-amount" id="thirdPrizeAmount" name="thirdPrizeAmount"
+                       placeholder="Amount ($)" />
+              </div>
+              <div class="col-auto text-center">
+                <span class="fw-bold text-secondary">or</span>
+              </div>
+              <div class="col">
+                <input type="text" inputmode="numeric" pattern="[0-9,]*"
+                       class="form-control" id="thirdPrizePercent" name="thirdPrizePercent"
+                       placeholder="Percentage (%)" />
+              </div>
+            </div>
+          </div>
+        
+          <!-- 4th Prize -->
+          <div class="mb-3">
+            <label class="form-label">4th Prize</label>
+            <div class="row g-2 align-items-center">
+              <div class="col">
+                <input type="text" inputmode="numeric" pattern="[0-9,]*"
+                       class="form-control prize-amount" id="fourthPrizeAmount" name="fourthPrizeAmount"
+                       placeholder="Amount ($)" />
+              </div>
+              <div class="col-auto text-center">
+                <span class="fw-bold text-secondary">or</span>
+              </div>
+              <div class="col">
+                <input type="text" inputmode="numeric" pattern="[0-9,]*"
+                       class="form-control" id="fourthPrizePercent" name="fourthPrizePercent"
+                       placeholder="Percentage (%)" />
+              </div>
+            </div>
+          </div>
+        
+         
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary btn-sm">Save Game</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript para i-toggle ang Game Mode -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const tourSelect  = document.getElementById('tournamentType');
+    const gameTypeRow     = document.getElementById('gameTypeRow');
+    const gameTypeRadios  = document.getElementsByName('gameType2');
+
+    tourSelect.addEventListener('change', () => {
+      const show = (tourSelect.value === '1' || tourSelect.value === '2');
+      gameTypeRow.classList.toggle('d-none', !show);
+      gameTypeRadios.forEach(r => r.required = show);
+    });
+  });
+</script>
+
+
+<!-- Edit Game Modal -->
+<div class="modal fade" id="editGameModal" tabindex="-1" aria-labelledby="editGameModalLabel" data-bs-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editGameModalLabel">Edit Game</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="editGameForm">
+        <input type="hidden" id="editGameId">
+        <div class="modal-body">
+          <!-- Tournament Type -->
+          <div class="row g-3 mb-3">
+            <div class="col">
+              <label for="editTournamentType" class="form-label">Tournament Type</label>
+              <select class="form-select" id="editTournamentType" name="editTournamentType" required>
+                <option value="" disabled selected>Select Tournament Type</option>
+                <option value="1">Non-cash Tournament</option>
+                <option value="2">Cash-on Tournament</option>
+              </select>
+            </div>
+          </div>
+          <!-- Game Type (styled radios) -->
+          <div class="d-flex align-items-center mb-3 d-none" id="editGameTypeRow">
+            <label class="me-4 fw-semibold mb-0">Game Type:</label>
+            <div class="form-check me-3">
+              <input class="form-check-input" type="radio" name="editGameType2" id="editGameTypeWinRate" value="1">
+              <label class="form-check-label" for="editGameTypeWinRate">Win Rate</label>
+            </div>
+            <div class="form-check me-3">
+              <input class="form-check-input" type="radio" name="editGameType2" id="editGameTypeWinLoss" value="2">
+              <label class="form-check-label" for="editGameTypeWinLoss">Win Loss</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="editGameType2" id="editGameTypeWinStreak" value="3">
+              <label class="form-check-label" for="editGameTypeWinStreak">Win Streak</label>
+            </div>
+          </div>
+          <!-- Game Type & Event Name -->
+          <div class="row g-3">
+            <div class="col mb-3">
+              <label for="editGameType" class="form-label">Game Type</label>
+              <select class="form-select" id="editGameType" name="gamekind" required>
+                <option value="" disabled selected>Select Game Type</option>
+                <option value="1">Monthly Event</option>
+                <option value="2">Daily Event</option>
+                <option value="3">Sit & Go Event</option>
+              </select>
+            </div>
+            <div class="col mb-3">
+              <label for="editEventName" class="form-label">Event Name</label>
+              <input type="text" class="form-control" id="editEventName" name="name" required>
+            </div>
+            <div class="col mb-3">
+              <label for="editEntranceFee" class="form-label">Entrance Fee ($)</label>
+              <input type="text" inputmode="numeric" pattern="[0-9,]*"
+                     class="form-control" id="editEntranceFee" name="entranceFee" required>
+            </div>
+          </div>
+          <!-- Start Date & Start Time -->
+          <div class="row g-3">
+            <div class="col mb-3">
+              <label for="editStartDate" class="form-label">Start Date</label>
+              <input type="date" class="form-control" id="editStartDate" name="startDate" required>
+            </div>
+            <div class="col mb-3">
+              <label for="editStartTime" class="form-label">Start Time</label>
+              <input type="time" class="form-control" id="editStartTime" name="startTime" required>
+            </div>
+            <div class="col mb-3">
+              <label for="editGameLength" class="form-label">Game Length (minutes)</label>
+              <input type="number" class="form-control" id="editGameLength" name="gameLength" required>
+            </div>
+          </div>
+          <!-- Max People, Starting Chips, Prize Pool -->
+          <div class="row g-3">
+            <div class="col mb-3">
+              <label for="editMaxPeople" class="form-label">Max People(0 = Unlimited)</label>
+              <input type="number" class="form-control" id="editMaxPeople" name="maxPeople" required>
+            </div>
+            <div class="col mb-3">
+              <label for="editStartingChips" class="form-label">Starting Chips</label>
+              <input type="text" inputmode="numeric" pattern="[0-9,]*"
+                     class="form-control" id="editStartingChips" name="startingChips" required>
+            </div>
+            <div class="col mb-3">
+              <label for="editPrizePool" class="form-label">Prize Pool ($)</label>
+              <input type="text" inputmode="numeric" pattern="[0-9,]*"
+                     class="form-control" id="editPrizePool" name="prizePool" required>
+            </div>
+            <div class="col mb-3">
+              <label for="editBuyIn" class="form-label">Buy_In ($)</label>
+              <input type="text" inputmode="numeric" pattern="[0-9,]*"
+                     class="form-control" id="editBuyIn" name="editBuyIn" required>
+            </div>
+          </div>
+          <!-- 1st Prize -->
+          <div class="mb-3">
+            <label class="form-label">1st Prize</label>
+            <div class="row g-2 align-items-center">
+              <div class="col">
+                <input type="text" inputmode="numeric" pattern="[0-9,]*"
+                       class="form-control prize-amount" id="editFirstPrizeAmount" name="editFirstPrizeAmount"
+                       placeholder="Amount ($)" />
+              </div>
+              <div class="col-auto text-center">
+                <span class="fw-bold text-secondary">or</span>
+              </div>
+              <div class="col">
+                <input type="text" inputmode="numeric" pattern="[0-9,]*"
+                       class="form-control" id="editFirstPrizePercent" name="editFirstPrizePercent"
+                       placeholder="Percentage (%)" />
+              </div>
+            </div>
+          </div>
+          <!-- 2nd Prize -->
+          <div class="mb-3">
+            <label class="form-label">2nd Prize</label>
+            <div class="row g-2 align-items-center">
+              <div class="col">
+                <input type="text" inputmode="numeric" pattern="[0-9,]*"
+                       class="form-control prize-amount" id="editSecondPrizeAmount" name="editSecondPrizeAmount"
+                       placeholder="Amount ($)" />
+              </div>
+              <div class="col-auto text-center">
+                <span class="fw-bold text-secondary">or</span>
+              </div>
+              <div class="col">
+                <input type="text" inputmode="numeric" pattern="[0-9,]*"
+                       class="form-control" id="editSecondPrizePercent" name="editSecondPrizePercent"
+                       placeholder="Percentage (%)" />
+              </div>
+            </div>
+          </div>
+          <!-- 3rd Prize -->
+          <div class="mb-3">
+            <label class="form-label">3rd Prize</label>
+            <div class="row g-2 align-items-center">
+              <div class="col">
+                <input type="text" inputmode="numeric" pattern="[0-9,]*"
+                       class="form-control prize-amount" id="editThirdPrizeAmount" name="editThirdPrizeAmount"
+                       placeholder="Amount ($)" />
+              </div>
+              <div class="col-auto text-center">
+                <span class="fw-bold text-secondary">or</span>
+              </div>
+              <div class="col">
+                <input type="text" inputmode="numeric" pattern="[0-9,]*"
+                       class="form-control" id="editThirdPrizePercent" name="editThirdPrizePercent"
+                       placeholder="Percentage (%)" />
+              </div>
+            </div>
+          </div>
+          <!-- 4th Prize -->
+          <div class="mb-3">
+            <label class="form-label">4th Prize</label>
+            <div class="row g-2 align-items-center">
+              <div class="col">
+                <input type="text" inputmode="numeric" pattern="[0-9,]*"
+                       class="form-control prize-amount" id="editFourthPrizeAmount" name="editFourthPrizeAmount"
+                       placeholder="Amount ($)" />
+              </div>
+              <div class="col-auto text-center">
+                <span class="fw-bold text-secondary">or</span>
+              </div>
+              <div class="col">
+                <input type="text" inputmode="numeric" pattern="[0-9,]*"
+                       class="form-control" id="editFourthPrizePercent" name="editFourthPrizePercent"
+                       placeholder="Percentage (%)" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary btn-sm">Update Game</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<script type="module">
+  import { getAllEvents, gameEvent } from '/js/apiAdmin.js';
+
+  $(document).ready(async function () {
+    let currentGameType = 'all';
+    let allEvents = [];
+
+    // Initialize DataTable with no ajax
+    const table = $('#gameTable').DataTable({
+    pageLength: 10,
+    lengthChange: false,
+    searching: true,    // <-- dapat true para gumana table.search()
+    ordering: false,
+    info: true,
+    responsive: true,
+    processing: true,
+    serverSide: false,
+    paging: true,
+    dom: '<"d-flex align-items-center gap-2"l><"d-none"f>t<"d-flex align-items-center justify-content-between mt-3"ip>',
+    columnDefs: [{
+      className: 'text-center align-middle',
+      targets: '_all'
+    }],
+    data: []
+  });
+
+
+    // Helper function to filter events
+    function filterEvents(events, gameType) {
+      if (gameType === 'all') return events;
+      return events.filter(ev => ev.gamekind === parseInt(gameType));
+    }
+
+    // Helper function to format events
+    function formatEvents(events) {
+      return events.map(ev => {
+        // 1) build badge for Event Type (Game Category)
+        let badgeClass, label;
+        switch (ev.gamekind) {
+          case 1:
+            badgeClass = 'bg-info-focus text-info-main';
+            label = 'Monthly Event';
+            break;
+          case 2:
+            badgeClass = 'bg-success-focus text-success-main';
+            label = 'Daily Event';
+            break;
+          case 3:
+            badgeClass = 'bg-warning-focus text-warning-main';
+            label = 'Sit & Go Event';
+            break;
+          default:
+            badgeClass = 'bg-secondary-focus text-secondary-main';
+            label = 'Unknown';
+        }
+        const eventTypeBadge = `<span class='event-type-badge ${badgeClass}'>${label}</span>`;
+
+        // 2) Tournament Type badge
+        let tournamentTypeLabel = '';
+        let tournamentTypeBadgeClass = '';
+        switch (ev.tournament_type) {
+          case 1:
+            tournamentTypeLabel = 'Non-cash Tournament';
+            tournamentTypeBadgeClass = 'bg-info-focus text-info-main';
+            break;
+          case 2:
+            tournamentTypeLabel = 'Cash-on Tournament';
+            tournamentTypeBadgeClass = 'bg-success-focus text-success-main';
+            break;
+          default:
+            tournamentTypeLabel = '-';
+            tournamentTypeBadgeClass = 'bg-secondary-focus text-secondary-main';
+        }
+        const tournamentTypeBadge = `<span class='event-type-badge ${tournamentTypeBadgeClass}'>${tournamentTypeLabel}</span>`;
+
+        // 3) Game Rules badge
+        let gameTypeLabel = '';
+        let gameTypeBadgeClass = '';
+        switch (ev.game_type) {
+          case 1:
+            gameTypeLabel = 'Win Rate';
+            gameTypeBadgeClass = 'bg-info-focus text-info-main';
+            break;
+          case 2:
+            gameTypeLabel = 'Win Loss';
+            gameTypeBadgeClass = 'bg-success-focus text-success-main';
+            break;
+          case 3:
+            gameTypeLabel = 'Win Streak';
+            gameTypeBadgeClass = 'bg-warning-focus text-warning-main';
+            break;
+          default:
+            gameTypeLabel = '-';
+            gameTypeBadgeClass = 'bg-secondary-focus text-secondary-main';
+        }
+        const gameTypeBadge = `<span class='event-type-badge ${gameTypeBadgeClass}'>${gameTypeLabel}</span>`;
+
+        // 4) action buttons
+        const actions = `
+          <div class="d-flex gap-2">
+            <a href="javascript:void(0)" class="w-32-px h-32-px bg-primary-light text-primary-600 rounded-circle d-inline-flex align-items-center justify-content-center btn-view"
+               data-id="${ev.idx}">
+              <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
+            </a>
+            <a href="javascript:void(0)" class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center btn-edit"
+               data-id="${ev.idx}">
+              <iconify-icon icon="lucide:edit"></iconify-icon>
+            </a>
+            <a href="javascript:void(0)" class="w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center btn-delete"
+               data-id="${ev.idx}">
+              <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
+            </a>
+          </div>`;
+
+        return [
+          eventTypeBadge,
+          tournamentTypeBadge,
+          gameTypeBadge,
+          ev.gamename,
+          ev.starttime ? formatDateTime12h(ev.starttime) : '',
+          ev.gamelength ? `${ev.gamelength} mins` : '',
+          ev.starting_chips ? `${Number(ev.starting_chips).toLocaleString()}` : 'NaN',
+          ev.guarantee ? `$${Number(ev.guarantee).toLocaleString()}` : '$NaN',
+          ev.entrance ? `$${Number(ev.entrance).toLocaleString()}` : '$NaN',
+          actions
+        ];
+      });
+    }
+
+    // Initial load
+    async function loadAndDisplayEvents() {
+      try {
+        allEvents = await getAllEvents();
+        const filteredData = filterEvents(allEvents, currentGameType);
+        const formatted = formatEvents(filteredData);
+        table.clear();
+        table.rows.add(formatted);
+        table.draw();
+      } catch (err) {
+        Swal.fire('Error', err.message || 'Failed to load game events', 'error');
+      }
+    }
+
+    await loadAndDisplayEvents();
+
+    // Handle tab changes
+    $('#gameTypeTabs button').on('click', function() {
+      currentGameType = $(this).data('type');
+      const filteredData = filterEvents(allEvents, currentGameType);
+      const formatted = formatEvents(filteredData);
+      table.clear();
+      table.rows.add(formatted);
+      table.draw();
+    });
+
+    // --- View Button & Populate ---
+    $(document).on('click', '.btn-view', async function() {
+      const id = $(this).data('id');
+      try {
+        const ev = await gameEvent.getById(id);
+
+        function fmt(v, pool) {
+          if (v == null) return '0';
+          if (v < 100) {
+            const amount = Math.round(pool * v / 100);
+            return `$${amount.toLocaleString()} <span style="color:#6c757d;font-style:italic;">(${v}%)</span>`;
+          }
+          return `$${v.toLocaleString()}`;
+        }
+
+        $('#viewPrizePool').text(ev.guarantee?.toLocaleString() ?? '0');
+        $('#viewFirstPrize').html(fmt(ev.first_prize, ev.guarantee));
+        $('#viewSecondPrize').html(fmt(ev.second_prize, ev.guarantee));
+        $('#viewThirdPrize').html(fmt(ev.third_prize, ev.guarantee));
+        $('#viewFourthPrize').html(fmt(ev.fourth_prize, ev.guarantee));
+        if ($('#viewMaxPeople').length === 0) {
+          $('<li class="list-group-item d-flex justify-content-between align-items-center">\n            <span>Max People</span>\n            <span id="viewMaxPeople" class="fw-bold"></span>\n          </li>')
+            .insertAfter($('#viewPrizePool').closest('li'));
+        }
+        $('#viewMaxPeople').text(ev.maxpeople?.toLocaleString() ?? '0');
+
+        $('#viewPrizesModal').modal('show');
+      } catch {
+        Swal.fire('Error','Failed to load game event prizes','error');
+      }
+    });
+
+    // --- Create Form ---
+    function getPrizeValue(amountSelector, percentSelector) {
+      const amount = $(`#${amountSelector}`).val().replace(/,/g, '');
+      const percent = $(`#${percentSelector}`).val().replace(/,/g, '');
+      if (amount) return parseInt(amount, 10); // send as number
+      if (percent) return parseFloat(percent); // send as percent, or you can send as string '40%' if backend expects
+      return 0;
+    }
+
+   $('#createGameForm').on('submit', async function(e) {
+      e.preventDefault();
+      // 1) Kunin ang Tournament Type
+      const tournamentType = parseInt($('#tournamentType').val(), 10);
+
+      // 2) Kunin ang Game Type mula sa radio buttons
+      //    (name="gameType", values: 1,2,3)
+      const radioVal = $('input[name="gameType2"]:checked').val();
+      const selectedGameType = radioVal ? parseInt(radioVal, 10) : null;
+
+      const payload = {
+        tournamentType,               // 1 = Tournament, 2 = Cash‐on Tournament
+        gameType: selectedGameType,   // 1 = Win Rate, 2 = Win Loss, 3 = Win Streak
+        gamename:   $('#eventName').val(),
+        gamekind:   +$('#gameType').val(),
+        starttime:  `${$('#startDate').val()} ${$('#startTime').val()}`,
+        gamelength: +$('#gameLength').val(),
+        maxpeople:  +$('#maxPeople').val(),
+       startingchips: parseInt($('#startingChips').val().replace(/,/g,''), 10),
+        guarantee:  parseInt($('#prizePool').val().replace(/,/g,''), 10),
+        entrance:   parseInt($('#entranceFee').val().replace(/,/g,''), 10),
+        buy_in:     parseInt($('#buyIn').val().replace(/,/g,''), 10),
+        firstPrize:  getPrizeValue('firstPrizeAmount', 'firstPrizePercent'),
+        secondPrize: getPrizeValue('secondPrizeAmount', 'secondPrizePercent'),
+        thirdPrize:  getPrizeValue('thirdPrizeAmount', 'thirdPrizePercent'),
+        fourthPrize: getPrizeValue('fourthPrizeAmount', 'fourthPrizePercent')
+      };
+      try {
+        await gameEvent.create(payload);
+        $('#createGameModal').modal('hide');
+        await loadAndDisplayEvents();
+        Swal.fire('Success','Game event created successfully','success');
+      } catch (err) {
+        Swal.fire('Error', err.message || 'Failed to create game event','error');
+      }
+    });
+
+    // --- Edit Button & Populate ---
+    function populateEditPrizeFields(amountSelector, percentSelector, value) {
+      if (value == null || value === '') {
+        $(`#${amountSelector}`).val('');
+        $(`#${percentSelector}`).val('');
+      } else if (parseFloat(value) < 100) {
+        $(`#${amountSelector}`).val('');
+        $(`#${percentSelector}`).val(value);
+      } else {
+        $(`#${amountSelector}`).val(Number(value).toLocaleString());
+        $(`#${percentSelector}`).val('');
+      }
+    }
+    $(document).on('click', '.btn-edit', async function() {
+      const id = $(this).data('id');
+      try {
+        const ev = await gameEvent.getById(id);
+        const dt = new Date(ev.starttime);
+        dt.setHours(dt.getHours() + 1); // Add 1 hour
+        // Populate Tournament Type
+        $('#editTournamentType').val(ev.tournament_type || '');
+        // Show/hide Game Type radios
+        const showGameType = (ev.tournament_type == 1 || ev.tournament_type == 2);
+        $('#editGameTypeRow').toggleClass('d-none', !showGameType);
+        // Set Game Type radio
+        if (showGameType && ev.game_type) {
+          $(`input[name='editGameType2'][value='${ev.game_type}']`).prop('checked', true);
+        }
+        $('#editGameType').val(ev.gamekind);
+        $('#editEventName').val(ev.gamename);
+        $('#editStartDate').val(dt.toISOString().slice(0,10));
+        $('#editStartTime').val(dt.toTimeString().slice(0,5));
+        $('#editGameLength').val(ev.gamelength);
+        $('#editMaxPeople').val(ev.maxpeople);
+        $('#editStartingChips').val(ev.starting_chips ? Number(ev.starting_chips).toLocaleString() : '0');
+        $('#editPrizePool').val(ev.guarantee.toLocaleString());
+        $('#editEntranceFee').val(ev.entrance.toLocaleString());
+        $('#editBuyIn').val(ev.buy_in ? Number(ev.buy_in).toLocaleString() : '0');
+        populateEditPrizeFields('editFirstPrizeAmount', 'editFirstPrizePercent', ev.first_prize);
+        populateEditPrizeFields('editSecondPrizeAmount', 'editSecondPrizePercent', ev.second_prize);
+        populateEditPrizeFields('editThirdPrizeAmount', 'editThirdPrizePercent', ev.third_prize);
+        populateEditPrizeFields('editFourthPrizeAmount', 'editFourthPrizePercent', ev.fourth_prize);
+        $('#editGameId').val(id);
+        $('#editGameModal').modal('show');
+      } catch {
+        Swal.fire('Error','Failed to load game event','error');
+      }
+    });
+
+    // Tournament Type toggle for Edit Modal
+    document.addEventListener('DOMContentLoaded', () => {
+      const tourSelect  = document.getElementById('editTournamentType');
+      const gameTypeRow     = document.getElementById('editGameTypeRow');
+      const gameTypeRadios  = document.getElementsByName('editGameType2');
+      if (tourSelect) {
+        tourSelect.addEventListener('change', () => {
+          const show = (tourSelect.value === '1' || tourSelect.value === '2');
+          gameTypeRow.classList.toggle('d-none', !show);
+          gameTypeRadios.forEach(r => r.required = show);
+        });
+      }
+    });
+
+    // --- Edit Form ---
+    function getEditPrizeValue(amountSelector, percentSelector) {
+      const amount = $(`#${amountSelector}`).val().replace(/,/g, '');
+      const percent = $(`#${percentSelector}`).val().replace(/,/g, '');
+      if (amount) return parseInt(amount, 10);
+      if (percent) return parseFloat(percent);
+      return 0;
+    }
+    $('#editGameForm').on('submit', async function(e) {
+  e.preventDefault();
+  const id = $('#editGameId').val();
+  // Tournament Type and Game Type
+  const tournamentType = parseInt($('#editTournamentType').val(), 10);
+  const radioVal = $('input[name="editGameType2"]:checked').val();
+  const selectedGameType = radioVal ? parseInt(radioVal, 10) : null;
+  const payload = {
+    tournamentType,
+    gameType: selectedGameType,
+    gamename:   $('#editEventName').val(),
+    gamekind:   +$('#editGameType').val(),
+    starttime:  `${$('#editStartDate').val()} ${$('#editStartTime').val()}`,
+    gamelength: +$('#editGameLength').val(),
+    maxpeople:  +$('#editMaxPeople').val(),
+    startingchips: $('#editStartingChips').val().replace(/,/g, '') || '0',
+    guarantee:  parseInt($('#editPrizePool').val().replace(/,/g,''), 10),
+    entrance:   parseInt($('#editEntranceFee').val().replace(/,/g,''), 10),
+    buy_in:     parseInt($('#editBuyIn').val().replace(/,/g,''), 10),
+    firstPrize:  getEditPrizeValue('editFirstPrizeAmount', 'editFirstPrizePercent'),
+    secondPrize: getEditPrizeValue('editSecondPrizeAmount', 'editSecondPrizePercent'),
+    thirdPrize:  getEditPrizeValue('editThirdPrizeAmount', 'editThirdPrizePercent'),
+    fourthPrize: getEditPrizeValue('editFourthPrizeAmount', 'editFourthPrizePercent')
+  };
+  try {
+    await gameEvent.update(id, payload);
+    $('#editGameModal').modal('hide');
+    await loadAndDisplayEvents();
+    Swal.fire('Success','Game event updated successfully','success');
+  } catch (err) {
+    Swal.fire('Error', err.message || 'Failed to update game event','error');
+  }
+});
+
+    // --- Delete ---
+    $(document).on('click', '.btn-delete', function() {
+      const id = $(this).data('id');
+      Swal.fire({
+        title: 'Are you sure?', text: "This cannot be undone",
+        icon: 'warning', showCancelButton: true
+      }).then(async res => {
+        if (res.isConfirmed) {
+          try {
+            await gameEvent.delete(id);
+            await loadAndDisplayEvents();
+            Swal.fire('Deleted','Game event has been deleted','success');
+          } catch {
+            Swal.fire('Error','Failed to delete game event','error');
+          }
+        }
+      });
+    });
+
+    // --- Table Controls ---
+    $('#perPageSelect').on('change', () => {
+      const newLength = +$('#perPageSelect').val();
+      table.page.len(newLength).draw();
+    });
+
+    // Custom search implementation
+    $('#searchInput').on('keyup', function() {
+      table.search(this.value).draw();
+    });
+
+    // --- Comma Mask only on Prize & Entrance ---
+    function applyCommaMask(sel) {
+      $(sel).on('input', function() {
+        const num = this.value.replace(/,/g, '');
+        this.value = num ? Number(num).toLocaleString() : '';
+      });
+    }
+    applyCommaMask('#prizePool, #entranceFee, #firstPrizeAmount, #secondPrizeAmount, #thirdPrizeAmount, #fourthPrizeAmount, #startingChips, #buyIn');
+    applyCommaMask('#editPrizePool, #editEntranceFee, #editFirstPrizeAmount, #editSecondPrizeAmount, #editThirdPrizeAmount, #editFourthPrizeAmount, #editStartingChips, #editBuyIn');
+  });
+
+  // 1) Clear form on modal hide:
+  $('#createGameModal, #editGameModal').on('hidden.bs.modal', function() {
+      const form = $(this).find('form')[0];
+      if (form) form.reset();
+    });
+
+  // Disable the other field if one is filled (for all prize fields)
+  function setupPrizeMutualDisable(amountSel, percentSel, shouldClearOther = false) {
+    $(amountSel).on('input', function() {
+      if (this.value && this.value.replace(/,/g, '') !== '') {
+        $(percentSel).prop('disabled', true);
+        if (shouldClearOther) $(percentSel).val('');
+      } else {
+        $(percentSel).prop('disabled', false);
+      }
+    });
+    $(percentSel).on('input', function() {
+      if (this.value && this.value.replace(/,/g, '') !== '') {
+        $(amountSel).prop('disabled', true);
+        if (shouldClearOther) $(amountSel).val('');
+      } else {
+        $(amountSel).prop('disabled', false);
+      }
+    });
+  }
+  // Create modal (no auto-clear)
+  setupPrizeMutualDisable('#firstPrizeAmount', '#firstPrizePercent');
+  setupPrizeMutualDisable('#secondPrizeAmount', '#secondPrizePercent');
+  setupPrizeMutualDisable('#thirdPrizeAmount', '#thirdPrizePercent');
+  setupPrizeMutualDisable('#fourthPrizeAmount', '#fourthPrizePercent');
+  // Edit modal (auto-clear the other field)
+  setupPrizeMutualDisable('#editFirstPrizeAmount', '#editFirstPrizePercent', true);
+  setupPrizeMutualDisable('#editSecondPrizeAmount', '#editSecondPrizePercent', true);
+  setupPrizeMutualDisable('#editThirdPrizeAmount', '#editThirdPrizePercent', true);
+  setupPrizeMutualDisable('#editFourthPrizeAmount', '#editFourthPrizePercent', true);
+
+  // Add this script to handle the prize value formatting
+  document.addEventListener('DOMContentLoaded', function() {
+    const prizeElements = document.querySelectorAll('.prize-value');
+    
+    prizeElements.forEach(element => {
+      const value = parseFloat(element.textContent);
+      if (!isNaN(value)) {
+        if (value < 100) {
+          element.textContent = value + '%';
+        } else if (value >= 1000) {
+          element.textContent = value.toLocaleString();
+        }
+      }
+    });
+  });
+
+  function formatDateTime12h(dateStr) {
+    const date = new Date(dateStr);
+    // Add 1 hour as in your original code
+    date.setHours(date.getHours() + 1);
+
+    // Format date as DD/MM/YYYY
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+
+    // Format time as h:mm AM/PM
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // 0 should be 12
+
+    return `${day}/${month}/${year}, ${hours}:${minutes} ${ampm}`;
+  }
+</script>
+
+<style>
+  /* GAME TYPE */
+#gameTypeRow, #editGameTypeRow {
+  padding: 0.5rem 0;
+}
+#gameTypeRow .form-check-input, #editGameTypeRow .form-check-input {
+  width: 1.2em;
+  height: 1.2em;
+  margin-top: 0;
+}
+#gameTypeRow .form-check-label, #editGameTypeRow .form-check-label {
+  margin-left: 0.3rem;
+  margin-bottom: 0;
+  font-weight: 500;
+  color: #333;
+}
+#gameTypeRow .form-check-label:hover, #editGameTypeRow .form-check-label:hover {
+  color: #0d6efd;
+  cursor: pointer;
+}
+
+/* Table fit adjustments */
+.table-fit-wrapper {
+  width: 100%;
+  overflow-x: auto !important;
+  max-width: 100%;
+  padding: 0;
+}
+#gameTable {
+  table-layout: auto !important;
+  width: 100% !important;
+  font-size: 16px;
+}
+#gameTable th, #gameTable td {
+  padding: 13px 8px !important;
+  white-space: nowrap !important;
+  text-align: center !important;
+  vertical-align: middle;
+}
+
+/* Uniform small badge for event type */
+.event-type-badge {
+  display: inline-block;
+  font-size: 12px !important;
+  padding: 2px 10px !important;
+  height: 22px;
+  line-height: 18px;
+  border-radius: 12px !important;
+  font-weight: 500;
+}
+
+/* All */
+.tab-all.active, .tab-all.nav-link.active {
+  border-color: #adb5bd !important; /* gray (secondary) */
+  color: #6c757d !important;
+  background: #f8f9fa !important;
+  border-radius: 8px !important; /* box shape */
+}
+/* Daily */
+.tab-daily.active, .tab-daily.nav-link.active {
+  border-color: #4ade80 !important; /* green (success) */
+  color: #22c55e !important;
+  background: #e6f9ef !important;
+  border-radius: 8px !important; /* box shape */
+}
+/* Sit & Go */
+.tab-sitngo.active, .tab-sitngo.nav-link.active {
+  border-color: #facc15 !important; /* yellow (warning) */
+  color: #eab308 !important;
+  background: #fffbe6 !important;
+  border-radius: 8px !important; /* box shape */
+}
+/* Monthly */
+.tab-monthly.active, .tab-monthly.nav-link.active {
+  border-color: #38bdf8 !important; /* blue (info) */
+  color: #0ea5e9 !important;
+  background: #e6f6fb !important;
+  border-radius: 8px !important; /* box shape */
+}
+/* Inactive tabs: keep oblong/fully rounded */
+.nav-link.tab-all,
+.nav-link.tab-daily,
+.nav-link.tab-sitngo,
+.nav-link.tab-monthly {
+  border-radius: 999px;
+  transition: border-radius 0.2s;
+}
+/* Remove extra border on focus */
+.nav-link:focus {
+  box-shadow: none !important;
+}
+
+/* Bawasan ang padding ng table header at body cells */
+#gameTable th, #gameTable td {
+  text-align: center !important;
+  vertical-align: middle;
+}
+
+.card-body {
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+@media (max-width: 991px) {
+  .card-body {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
+  .table-fit-wrapper {
+    padding: 0;
+  }
+  #gameTable {
+    font-size: 14px;
+    min-width: 700px;
+  }
+}
+@media (max-width: 600px) {
+  #gameTable {
+    font-size: 12px;
+    min-width: 500px;
+  }
+}
+</style>
+

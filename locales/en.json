@@ -1,0 +1,32 @@
+{
+  "language": {
+    "choose": "Choose Your Language",
+    "en": "English",
+    "ko": "Korean",
+    "ja": "Japanese",
+    "zh": "Chinese"
+  },
+  "navbar":{
+    "message": "Message",
+    "see_message": "See All Message",
+    "notifications": "Notifications",
+    "see_notifications": "See All Notifications",
+    "my_profile": "My Profile",
+    "inbox": "Inbox",
+    "setting": "Setting",
+    "log_out": "Log Out"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "game_event_title": "Game Event",
+    "game_event": "Game Event",
+    "recharge": "Recharge",
+    "exchange": "Exchange",
+    "user_management": "User Management",
+    "users": "Users",
+    "users_list": "Users List",
+    "role": "Role",
+    "access": "Access",
+    "assign_role": "Assign Role"
+  }
+}

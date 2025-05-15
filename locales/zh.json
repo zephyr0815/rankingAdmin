@@ -1,0 +1,32 @@
+{
+  "language": {
+    "choose": "选择你的语言",
+    "en": "英语",
+    "ko": "韩国",
+    "ja": "日本",
+    "zh": "中国"
+  },
+  "navbar": {
+    "message": "消息",
+    "see_message": "查看所有消息",
+    "notifications": "通知",
+    "see_notifications": "查看所有通知",
+    "my_profile": "我的个人资料",
+    "inbox": "收件箱",
+    "setting": "设置",
+    "log_out": "退出登录"
+  },
+  "sidebar": {
+    "dashboard": "仪表盘",
+    "game_event_title": "游戏活动",
+    "game_event": "游戏活动",
+    "recharge": "充值",
+    "exchange": "兑换",
+    "user_management": "用户管理",
+    "users": "用户",
+    "users_list": "用户列表",
+    "role": "角色",
+    "access": "访问",
+    "assign_role": "分配角色"
+  }
+}

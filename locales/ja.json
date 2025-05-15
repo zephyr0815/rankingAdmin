@@ -1,0 +1,32 @@
+{
+  "language": {
+    "choose": "言語を選択してください",
+    "en": "英語",
+    "ko": "韓国語",
+    "ja": "日本語",
+    "zh": "中国語"
+  },
+  "navbar": {
+    "message": "メッセージ",
+    "see_message": "すべてのメッセージを見る",
+    "notifications": "通知",
+    "see_notifications": "すべての通知を見る",
+    "my_profile": "マイプロフィール",
+    "inbox": "受信トレイ",
+    "setting": "設定",
+    "log_out": "ログアウト"
+  },
+  "sidebar": {
+    "dashboard": "ダッシュボード",
+    "game_event_title": "ゲームイベント",
+    "game_event": "ゲームイベントt",
+    "recharge": "充電する",
+    "exchange": "交換",
+    "user_management": "ユーザー管理",
+    "users": "ユーザー",
+    "users_list": "ユーザー一覧",
+    "role": "役割",
+    "access": "アクセス",
+    "assign_role": "役割を割り当てる"
+  }
+}

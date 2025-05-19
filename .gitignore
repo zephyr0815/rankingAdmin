@@ -1,0 +1,12 @@
+.vscode
+.DS_Store
+.settings
+.idea
+default.json
+
+node_modules
+
+.env
+*.log
+__*.*
+package-lock.json

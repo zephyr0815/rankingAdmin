@@ -195,9 +195,13 @@
           <!-- Entrance Fee & Prize Pool -->
           <div class="row g-3">
             <div class="col mb-3">
-              <label for="maxPeople" class="form-label">Max People(0 = Unlimited)</label>
-              <input type="number" class="form-control" id="maxPeople" name="maxPeople" required>
-            </div>
+              <label for="maxPeopleDisplay" class="form-label">Max People (✅ = Unli)</label>
+              <div class="input-group">
+              <span class="input-group-text"><input class="form-check-input mt-0" type="checkbox" id="maxPeopleUnlimited" aria-label="Unlimited" required></span>
+              <input type="text" class="form-control" id="maxPeopleDisplay" placeholder="Enter value" inputmode="numeric" pattern="\d*" aria-label="Max People" required>
+              <input type="hidden" name="maxPeople" id="maxPeopleValue" value="">
+              </div>
+              </div>
             <div class="col mb-3">
               <label for="startingChips" class="form-label">Starting Chips</label>
               <input type="text" inputmode="numeric" pattern="[0-9,]*"
@@ -400,8 +404,14 @@
           <!-- Max People, Starting Chips, Prize Pool -->
           <div class="row g-3">
             <div class="col mb-3">
-              <label for="editMaxPeople" class="form-label">Max People(0 = Unlimited)</label>
-              <input type="number" class="form-control" id="editMaxPeople" name="maxPeople" required>
+              <label for="editMaxPeopleDisplay" class="form-label">Max People (✅ = Unli)</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <input class="form-check-input mt-0" type="checkbox" id="editMaxPeopleUnlimited" aria-label="Unlimited" required>
+                </span>
+                <input type="text" class="form-control" id="editMaxPeopleDisplay" placeholder="Enter value" inputmode="numeric" pattern="\d*" aria-label="Max People" required>
+                <input type="hidden" name="maxPeople" id="editMaxPeopleValue" value="">
+              </div>
             </div>
             <div class="col mb-3">
               <label for="editStartingChips" class="form-label">Starting Chips</label>
@@ -719,7 +729,7 @@
         gamekind:   +$('#gameType').val(),
         starttime:  `${$('#startDate').val()} ${$('#startTime').val()}`,
         gamelength: +$('#gameLength').val(),
-        maxpeople:  +$('#maxPeople').val(),
+        maxpeople:  +$('#maxPeopleValue').val(),
        startingchips: parseInt($('#startingChips').val().replace(/,/g,''), 10),
         guarantee:  parseInt($('#prizePool').val().replace(/,/g,''), 10),
         entrance:   parseInt($('#entranceFee').val().replace(/,/g,''), 10),
@@ -752,6 +762,57 @@
         $(`#${percentSelector}`).val('');
       }
     }
+
+    // Function to handle unlimited checkbox and text field interaction
+    function setupUnlimitedMaxPeople(checkboxId, displayId, valueId) {
+      const $checkbox = $(`#${checkboxId}`);
+      const $display = $(`#${displayId}`);
+      const $value = $(`#${valueId}`);
+
+      $checkbox.on('change', function() {
+        if (this.checked) {
+          $display.val('Unlimited').prop('disabled', true);
+          $value.val('999999');
+        } else {
+          $display.val('').prop('disabled', false);
+          $value.val('');
+        }
+      });
+
+      $display.on('input', function() {
+        if (this.value) {
+          $checkbox.prop('disabled', true);
+          $value.val(this.value.replace(/,/g, ''));
+        } else {
+          $checkbox.prop('disabled', false);
+          $value.val('');
+        }
+      });
+    }
+
+    // Setup for create modal
+    setupUnlimitedMaxPeople('maxPeopleUnlimited', 'maxPeopleDisplay', 'maxPeopleValue');
+
+    // Setup for edit modal
+    setupUnlimitedMaxPeople('editMaxPeopleUnlimited', 'editMaxPeopleDisplay', 'editMaxPeopleValue');
+
+    // Modify the populateEditPrizeFields function to handle unlimited max people
+    function populateEditMaxPeople(value) {
+      const $checkbox = $('#editMaxPeopleUnlimited');
+      const $display = $('#editMaxPeopleDisplay');
+      const $value = $('#editMaxPeopleValue');
+
+      if (value === 999999) {
+        $checkbox.prop('checked', true);
+        $display.val('Unlimited').prop('disabled', true);
+        $value.val('999999');
+      } else {
+        $checkbox.prop('checked', false);
+        $display.val(value ? Number(value).toLocaleString() : '').prop('disabled', false);
+        $value.val(value || '');
+      }
+    }
+
     $(document).on('click', '.btn-edit', async function() {
       const id = $(this).data('id');
       try {
@@ -772,7 +833,7 @@
         $('#editStartDate').val(dt.toISOString().slice(0,10));
         $('#editStartTime').val(dt.toTimeString().slice(0,5));
         $('#editGameLength').val(ev.gamelength);
-        $('#editMaxPeople').val(ev.maxpeople);
+        populateEditMaxPeople(ev.maxpeople);
         $('#editStartingChips').val(ev.starting_chips ? Number(ev.starting_chips).toLocaleString() : '0');
         $('#editPrizePool').val(ev.guarantee.toLocaleString());
         $('#editEntranceFee').val(ev.entrance.toLocaleString());
@@ -824,7 +885,7 @@
     gamekind:   +$('#editGameType').val(),
     starttime:  `${$('#editStartDate').val()} ${$('#editStartTime').val()}`,
     gamelength: +$('#editGameLength').val(),
-    maxpeople:  +$('#editMaxPeople').val(),
+    maxpeople:  +$('#editMaxPeopleValue').val(),
     startingchips: $('#editStartingChips').val().replace(/,/g, '') || '0',
     guarantee:  parseInt($('#editPrizePool').val().replace(/,/g,''), 10),
     entrance:   parseInt($('#editEntranceFee').val().replace(/,/g,''), 10),

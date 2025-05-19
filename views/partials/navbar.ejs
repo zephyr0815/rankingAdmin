@@ -408,3 +408,99 @@
     setInterval(loadNotifications, 30000);
   });
   </script>
+  <script>
+    const socket = io('http://localhost:4000'); // Palitan kung iba ang backend API mo
+    
+    // Join as admin to receive all messages
+    socket.emit('admin-join');
+    
+    // Helper: Format time (or use your timeAgo if you want)
+    function formatTime(t) {
+      return t || new Date().toLocaleTimeString();
+    }
+    
+    // Where to inject messages (adjust selector if needed)
+    const messageListContainer = document.querySelector('.dropdown-menu-lg .max-h-400-px');
+    
+    let allMessages = [];
+
+    // Render all messages (on connect)
+    socket.on('support-messages', (messages) => {
+      allMessages = messages.slice().reverse();
+      if (!messageListContainer) return;
+      messageListContainer.innerHTML = '';
+      allMessages.forEach(addMessageToPanel); // newest on top
+      updateMessageBadge(allMessages);
+    });
+    
+    // Render new message (real-time)
+    socket.on('new-support-message', (msg) => {
+      if (!messageListContainer) return;
+      allMessages.unshift(msg); // add new message to the start
+      addMessageToPanel(msg, true);
+      updateMessageBadge(allMessages);
+    });
+    
+    // Add a single message to the panel
+    function addMessageToPanel(msg, animate = false) {
+      const a = document.createElement('a');
+      a.href = 'javascript:void(0)';
+      a.className = 'px-24 py-12 d-flex align-items-start gap-3 mb-2 justify-content-between' + (animate ? ' animate-fadein' : '');
+    
+      a.innerHTML = `
+        <div class="text-black hover-bg-transparent hover-text-primary d-flex align-items-center gap-3">
+          <span class="w-40-px h-40-px rounded-circle flex-shrink-0 position-relative">
+            <img src="/images/notification/fem.png" alt="">
+            <span class="w-8-px h-8-px bg-success-main rounded-circle position-absolute end-0 bottom-0"></span>
+          </span>
+          <div>
+            <h6 class="text-md fw-semibold mb-4">${msg.user || 'Guest'}</h6>
+            <p class="mb-0 text-sm text-secondary-light text-w-100-px">${msg.message}</p>
+          </div>
+        </div>
+        <div class="d-flex flex-column align-items-end">
+          <span class="text-sm text-secondary-light flex-shrink-0">${msg.time ? msg.time : formatTime()}</span>
+          <span class="mt-4 text-xs text-base w-16-px h-16-px d-flex justify-content-center align-items-center bg-warning-main rounded-circle">!</span>
+        </div>
+      `;
+      // Prepend so newest is on top
+      messageListContainer.prepend(a);
+    }
+
+    // --- DYNAMIC MESSAGE BADGE ---
+    function updateMessageBadge(messages) {
+      let unread = 0;
+      if (Array.isArray(messages)) {
+        unread = messages.filter(m => !m.read && m.read !== 1 && m.is_read !== 1).length;
+        if (unread === 0 && messages.length > 0 && messages[0].read === undefined && messages[0].is_read === undefined) {
+          unread = messages.length;
+        }
+      }
+      const badge = document.getElementById('messageBadge');
+      const badgeIcon = document.getElementById('messageBadgeIcon');
+      if (badge) badge.textContent = unread < 10 ? '0' + unread : unread;
+      if (badgeIcon) badgeIcon.textContent = unread > 0 ? unread : '';
+      if (badgeIcon) badgeIcon.style.display = unread > 0 ? '' : 'none';
+    }
+    </script>
+
+<script>
+// Expand message list on 'See All Message' click
+const seeAllBtn = document.getElementById('seeAllMessageBtn');
+const msgList = document.querySelector('.dropdown-menu-lg .max-h-400-px');
+if (seeAllBtn && msgList) {
+  seeAllBtn.addEventListener('click', function(e) {
+    e.stopPropagation(); // Try to prevent dropdown from closing
+    msgList.style.maxHeight = '700px'; // mas mahaba na expansion
+    seeAllBtn.parentElement.style.display = 'none';
+  });
+}
+// Reset state tuwing magbubukas ang dropdown (gamit ang tamang dropdown parent)
+const msgDropdownParent = document.querySelector('.navbar-header .dropdown:nth-child(3)'); // adjust selector if needed
+if (msgDropdownParent) {
+  msgDropdownParent.addEventListener('show.bs.dropdown', function() {
+    if (msgList) msgList.style.maxHeight = '400px';
+    if (seeAllBtn && seeAllBtn.parentElement) seeAllBtn.parentElement.style.display = '';
+  });
+}
+</script>

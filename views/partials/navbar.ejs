@@ -320,12 +320,9 @@
     }
 </script>
 
-<script>
-    /**
-     * Convert a date into a relative "time ago" string.
-     * e.g. "2 minutes ago", "3 hours ago", "just now"
-     */
-     function timeAgo(date) {
+<script type="module">
+  // 1) Define timeAgo first
+  function timeAgo(date) {
     const seconds = Math.floor((Date.now() - new Date(date)) / 1000);
     const intervals = {
       year:   31536000,
@@ -344,29 +341,27 @@
     return 'just now';
   }
 
+  // 2) Then your notification loader
+  const base = `${window.location.origin}/api/notifications`;
+
   async function loadNotifications() {
     try {
-      const base = `${window.location.protocol}//${window.location.hostname}:4020/api/notifications`;
-
-      // 1) unread count
+      // unread count
       const cResp = await fetch(`${base}/unread/count`, { credentials: 'include' });
+      if (!cResp.ok) throw new Error('Count fetch failed');
       const { count } = await cResp.json();
       document.getElementById('notificationBadgeIcon').textContent = count;
 
-      // 2) fetch latest (newest-first)
+      // latest notifications
       const lResp = await fetch(`${base}?limit=5`, { credentials: 'include' });
+      if (!lResp.ok) throw new Error('List fetch failed');
       const notes = await lResp.json();
 
       const list = document.getElementById('notificationList');
       list.innerHTML = '';
-
       if (notes.length === 0) {
-        const empty = document.createElement('div');
-        empty.className = 'px-24 py-12 text-sm text-secondary-light';
-        empty.textContent = 'No notifications.';
-        list.appendChild(empty);
+        list.innerHTML = `<div class="px-24 py-12 text-sm text-secondary-light">No notifications.</div>`;
       } else {
-        // API returns newest-first, so appendChild keeps that order top→down
         notes.forEach(n => {
           const a = document.createElement('a');
           a.href = `/users/users-list?highlightUid=${encodeURIComponent(n.uid)}`;
@@ -374,7 +369,6 @@
             px-24 py-12 d-flex align-items-start gap-3 mb-2 justify-content-between
             ${n.is_read === 0 ? 'bg-neutral-50' : ''}
           `.trim();
-
           a.innerHTML = `
             <div class="d-flex align-items-center gap-3">
               <span class="w-44-px h-44-px bg-info-subtle text-info-main rounded-circle d-flex justify-content-center align-items-center flex-shrink-0">
@@ -389,27 +383,24 @@
               ${timeAgo(n.created_at)}
             </span>
           `;
-
           a.addEventListener('click', async () => {
-            await fetch(`${base}/${n.id}/read`, {
-              method: 'PUT',
-              credentials: 'include'
-            });
+            await fetch(`${base}/${n.id}/read`, { method: 'PUT', credentials: 'include' });
             loadNotifications();
           });
-
-          // append (not prepend), then animate
           list.appendChild(a);
           a.classList.add('animate-fadein');
         });
       }
     } catch (err) {
       console.error('Notification load error', err);
+      document.getElementById('notificationList').innerHTML =
+        `<div class="px-24 py-12 text-sm text-danger">Error loading notifications.</div>`;
     }
   }
 
+  // 3) Kick it off
   document.addEventListener('DOMContentLoaded', () => {
     loadNotifications();
     setInterval(loadNotifications, 30000);
   });
-  </script>
+</script>

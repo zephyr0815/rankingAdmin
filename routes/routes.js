@@ -38,11 +38,15 @@ router.get("/calendar", (req, res) => {
 });
 
 router.get("/chat", (req, res) => {
-  res.render("chat", { title: "Chat", subTitle: "Chat" });
+  res.render("chat", { title: "Chat", subTitle: "Chat", adminName: (req.session && req.session.adminName) || 'Admin' });
 });
 
 router.get("/chat-profile", (req, res) => {
-  res.render("chatProfile", { title: "Dashboard", subTitle: "subTitle" });
+  res.render("chatProfile", {
+    title: "Dashboard",
+    subTitle: "subTitle",
+    profileUser: req.query.user || ''
+  });
 });
 
 router.get("/comingsoon", (req, res) => {

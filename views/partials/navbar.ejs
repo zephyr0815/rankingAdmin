@@ -212,7 +212,7 @@
 
                         </div>
                         <div class="text-center py-12 px-16">
-                            <a href="javascript:void(0)" id="seeAllMessageBtn" class="text-primary-600 fw-semibold text-md"><%= __('navbar.see_message') %></a>
+                            <a href="/chat" class="text-primary-600 fw-semibold text-md"><%= __('navbar.see_message') %></a>
                         </div>
                     </div>
                 </div><!-- Message dropdown end -->
@@ -409,7 +409,8 @@
   });
   </script>
   <script>
-    const socket = io('http://localhost:4000'); // Palitan kung iba ang backend API mo
+    window.socket = window.socket || io('http://localhost:4000');
+    const socket = window.socket;
     
     // Join as admin to receive all messages
     socket.emit('admin-join');

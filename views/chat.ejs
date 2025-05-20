@@ -1,286 +1,23 @@
-
+<% var adminName = typeof adminName !== 'undefined' ? adminName : 'Admin'; %>
 <div class="chat-wrapper">
     <div class="chat-sidebar card">
-        <div class="chat-sidebar-single active top-profile">
-            <div class="img">
-                <img src="/images/chat/1.png" alt="image">
-            </div>
-            <div class="info">
-                <h6 class="text-md mb-0">Kathryn Murphy</h6>
-                <p class="mb-0">Available</p>
-            </div>
-            <div class="action">
-                <div class="btn-group">
-                    <button type="button" class="text-secondary-light text-xl" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
-                        <iconify-icon icon="bi:three-dots"></iconify-icon>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-lg-end border">
-                        <li>
-                            <a href="/chat-profile" class="dropdown-item rounded text-secondary-light bg-hover-neutral-200 text-hover-neutral-900 d-flex align-items-center gap-2">
-                                <iconify-icon icon="fluent:person-32-regular"></iconify-icon>
-                                Profile
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/chat-profile" class="dropdown-item rounded text-secondary-light bg-hover-neutral-200 text-hover-neutral-900 d-flex align-items-center gap-2">
-                                <iconify-icon icon="carbon:settings"></iconify-icon>
-                                Settings
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div><!-- chat-sidebar-single end -->
         <div class="chat-search">
             <span class="icon">
                 <iconify-icon icon="iconoir:search"></iconify-icon>
             </span>
             <input type="text" name="#0" autocomplete="off" placeholder="Search...">
         </div>
+        
         <div class="chat-all-list">
-            <div class="chat-sidebar-single active">
-                <div class="img">
-                    <img src="/images/chat/2.png" alt="image">
-                </div>
-                <div class="info">
-                    <h6 class="text-sm mb-1">Kathryn Murphy</h6>
-                    <p class="mb-0 text-xs">hey! there i'm...</p>
-                </div>
-                <div class="action text-end">
-                    <p class="mb-0 text-neutral-400 text-xs lh-1">12:30 PM</p>
-                    <span class="w-16-px h-16-px text-xs rounded-circle bg-warning-main text-white d-inline-flex align-items-center justify-content-center">8</span>
-                </div>
-            </div><!-- chat-sidebar-single end -->
-            <div class="chat-sidebar-single active">
-                <div class="img">
-                    <img src="/images/chat/3.png" alt="image">
-                </div>
-                <div class="info">
-                    <h6 class="text-sm mb-1">James Michael</h6>
-                    <p class="mb-0 text-xs">hey! there i'm...</p>
-                </div>
-                <div class="action text-end">
-                    <p class="mb-0 text-neutral-400 text-xs lh-1">12:30 PM</p>
-                    <span class="w-16-px h-16-px text-xs rounded-circle bg-warning-main text-white d-inline-flex align-items-center justify-content-center">8</span>
-                </div>
-            </div><!-- chat-sidebar-single end -->
-            <div class="chat-sidebar-single">
-                <div class="img">
-                    <img src="/images/chat/4.png" alt="image">
-                </div>
-                <div class="info">
-                    <h6 class="text-sm mb-1">Russell Lucas</h6>
-                    <p class="mb-0 text-xs">hey! there i'm...</p>
-                </div>
-                <div class="action text-end">
-                    <p class="mb-0 text-neutral-400 text-xs lh-1">12:30 PM</p>
-                    <span class="w-16-px h-16-px text-xs rounded-circle bg-warning-main text-white d-inline-flex align-items-center justify-content-center">8</span>
-                </div>
-            </div><!-- chat-sidebar-single end -->
-            <div class="chat-sidebar-single">
-                <div class="img">
-                    <img src="/images/chat/5.png" alt="image">
-                </div>
-                <div class="info">
-                    <h6 class="text-sm mb-1">Caleb Bradley</h6>
-                    <p class="mb-0 text-xs">hey! there i'm...</p>
-                </div>
-                <div class="action text-end">
-                    <p class="mb-0 text-neutral-400 text-xs lh-1">12:30 PM</p>
-                    <span class="w-16-px h-16-px text-xs rounded-circle bg-warning-main text-white d-inline-flex align-items-center justify-content-center">8</span>
-                </div>
-            </div><!-- chat-sidebar-single end -->
-            <div class="chat-sidebar-single active">
-                <div class="img">
-                    <img src="/images/chat/6.png" alt="image">
-                </div>
-                <div class="info">
-                    <h6 class="text-sm mb-1">Bobby Roy</h6>
-                    <p class="mb-0 text-xs">hey! there i'm...</p>
-                </div>
-                <div class="action text-end">
-                    <p class="mb-0 text-neutral-400 text-xs lh-1">12:30 PM</p>
-                    <span class="w-16-px h-16-px text-xs rounded-circle bg-warning-main text-white d-inline-flex align-items-center justify-content-center">8</span>
-                </div>
-            </div><!-- chat-sidebar-single end -->
-            <div class="chat-sidebar-single active">
-                <div class="img">
-                    <img src="/images/chat/7.png" alt="image">
-                </div>
-                <div class="info">
-                    <h6 class="text-sm mb-1">Vincent Liam</h6>
-                    <p class="mb-0 text-xs">hey! there i'm...</p>
-                </div>
-                <div class="action text-end">
-                    <p class="mb-0 text-neutral-400 text-xs lh-1">12:30 PM</p>
-                    <span class="w-16-px h-16-px text-xs rounded-circle bg-warning-main text-white d-inline-flex align-items-center justify-content-center">8</span>
-                </div>
-            </div><!-- chat-sidebar-single end -->
-            <div class="chat-sidebar-single active">
-                <div class="img">
-                    <img src="/images/chat/8.png" alt="image">
-                </div>
-                <div class="info">
-                    <h6 class="text-sm mb-1">Randy Mason</h6>
-                    <p class="mb-0 text-xs">hey! there i'm...</p>
-                </div>
-                <div class="action text-end">
-                    <p class="mb-0 text-neutral-400 text-xs lh-1">12:30 PM</p>
-                    <span class="w-16-px h-16-px text-xs rounded-circle bg-warning-main text-white d-inline-flex align-items-center justify-content-center">8</span>
-                </div>
-            </div><!-- chat-sidebar-single end -->
-            <div class="chat-sidebar-single active">
-                <div class="img">
-                    <img src="/images/chat/9.png" alt="image">
-                </div>
-                <div class="info">
-                    <h6 class="text-sm mb-1">Albert Wayne</h6>
-                    <p class="mb-0 text-xs">hey! there i'm...</p>
-                </div>
-                <div class="action text-end">
-                    <p class="mb-0 text-neutral-400 text-xs lh-1">12:30 PM</p>
-                    <span class="w-16-px h-16-px text-xs rounded-circle bg-warning-main text-white d-inline-flex align-items-center justify-content-center">8</span>
-                </div>
-            </div><!-- chat-sidebar-single end -->
-            <div class="chat-sidebar-single active">
-                <div class="img">
-                    <img src="/images/chat/10.png" alt="image">
-                </div>
-                <div class="info">
-                    <h6 class="text-sm mb-1">Elijah Willie</h6>
-                    <p class="mb-0 text-xs">hey! there i'm...</p>
-                </div>
-                <div class="action text-end">
-                    <p class="mb-0 text-neutral-400 text-xs lh-1">12:30 PM</p>
-                    <span class="w-16-px h-16-px text-xs rounded-circle bg-warning-main text-white d-inline-flex align-items-center justify-content-center">8</span>
-                </div>
-            </div><!-- chat-sidebar-single end -->
-            <div class="chat-sidebar-single active">
-                <div class="img">
-                    <img src="/images/chat/2.png" alt="image">
-                </div>
-                <div class="info">
-                    <h6 class="text-sm mb-1">Kathryn Murphy</h6>
-                    <p class="mb-0 text-xs">hey! there i'm...</p>
-                </div>
-                <div class="action text-end">
-                    <p class="mb-0 text-neutral-400 text-xs lh-1">12:30 PM</p>
-                    <span class="w-16-px h-16-px text-xs rounded-circle bg-warning-main text-white d-inline-flex align-items-center justify-content-center">8</span>
-                </div>
-            </div><!-- chat-sidebar-single end -->
-            <div class="chat-sidebar-single active">
-                <div class="img">
-                    <img src="/images/chat/3.png" alt="image">
-                </div>
-                <div class="info">
-                    <h6 class="text-sm mb-1">James Michael</h6>
-                    <p class="mb-0 text-xs">hey! there i'm...</p>
-                </div>
-                <div class="action text-end">
-                    <p class="mb-0 text-neutral-400 text-xs lh-1">12:30 PM</p>
-                    <span class="w-16-px h-16-px text-xs rounded-circle bg-warning-main text-white d-inline-flex align-items-center justify-content-center">8</span>
-                </div>
-            </div><!-- chat-sidebar-single end -->
-            <div class="chat-sidebar-single">
-                <div class="img">
-                    <img src="/images/chat/4.png" alt="image">
-                </div>
-                <div class="info">
-                    <h6 class="text-sm mb-1">Russell Lucas</h6>
-                    <p class="mb-0 text-xs">hey! there i'm...</p>
-                </div>
-                <div class="action text-end">
-                    <p class="mb-0 text-neutral-400 text-xs lh-1">12:30 PM</p>
-                    <span class="w-16-px h-16-px text-xs rounded-circle bg-warning-main text-white d-inline-flex align-items-center justify-content-center">8</span>
-                </div>
-            </div><!-- chat-sidebar-single end -->
-            <div class="chat-sidebar-single">
-                <div class="img">
-                    <img src="/images/chat/5.png" alt="image">
-                </div>
-                <div class="info">
-                    <h6 class="text-sm mb-1">Caleb Bradley</h6>
-                    <p class="mb-0 text-xs">hey! there i'm...</p>
-                </div>
-                <div class="action text-end">
-                    <p class="mb-0 text-neutral-400 text-xs lh-1">12:30 PM</p>
-                    <span class="w-16-px h-16-px text-xs rounded-circle bg-warning-main text-white d-inline-flex align-items-center justify-content-center">8</span>
-                </div>
-            </div><!-- chat-sidebar-single end -->
-            <div class="chat-sidebar-single active">
-                <div class="img">
-                    <img src="/images/chat/6.png" alt="image">
-                </div>
-                <div class="info">
-                    <h6 class="text-sm mb-1">Bobby Roy</h6>
-                    <p class="mb-0 text-xs">hey! there i'm...</p>
-                </div>
-                <div class="action text-end">
-                    <p class="mb-0 text-neutral-400 text-xs lh-1">12:30 PM</p>
-                    <span class="w-16-px h-16-px text-xs rounded-circle bg-warning-main text-white d-inline-flex align-items-center justify-content-center">8</span>
-                </div>
-            </div><!-- chat-sidebar-single end -->
-            <div class="chat-sidebar-single active">
-                <div class="img">
-                    <img src="/images/chat/7.png" alt="image">
-                </div>
-                <div class="info">
-                    <h6 class="text-sm mb-1">Vincent Liam</h6>
-                    <p class="mb-0 text-xs">hey! there i'm...</p>
-                </div>
-                <div class="action text-end">
-                    <p class="mb-0 text-neutral-400 text-xs lh-1">12:30 PM</p>
-                    <span class="w-16-px h-16-px text-xs rounded-circle bg-warning-main text-white d-inline-flex align-items-center justify-content-center">8</span>
-                </div>
-            </div><!-- chat-sidebar-single end -->
-            <div class="chat-sidebar-single active">
-                <div class="img">
-                    <img src="/images/chat/8.png" alt="image">
-                </div>
-                <div class="info">
-                    <h6 class="text-sm mb-1">Randy Mason</h6>
-                    <p class="mb-0 text-xs">hey! there i'm...</p>
-                </div>
-                <div class="action text-end">
-                    <p class="mb-0 text-neutral-400 text-xs lh-1">12:30 PM</p>
-                    <span class="w-16-px h-16-px text-xs rounded-circle bg-warning-main text-white d-inline-flex align-items-center justify-content-center">8</span>
-                </div>
-            </div><!-- chat-sidebar-single end -->
-            <div class="chat-sidebar-single active">
-                <div class="img">
-                    <img src="/images/chat/9.png" alt="image">
-                </div>
-                <div class="info">
-                    <h6 class="text-sm mb-1">Albert Wayne</h6>
-                    <p class="mb-0 text-xs">hey! there i'm...</p>
-                </div>
-                <div class="action text-end">
-                    <p class="mb-0 text-neutral-400 text-xs lh-1">12:30 PM</p>
-                    <span class="w-16-px h-16-px text-xs rounded-circle bg-warning-main text-white d-inline-flex align-items-center justify-content-center">8</span>
-                </div>
-            </div><!-- chat-sidebar-single end -->
-            <div class="chat-sidebar-single active">
-                <div class="img">
-                    <img src="/images/chat/10.png" alt="image">
-                </div>
-                <div class="info">
-                    <h6 class="text-sm mb-1">Elijah Willie</h6>
-                    <p class="mb-0 text-xs">hey! there i'm...</p>
-                </div>
-                <div class="action text-end">
-                    <p class="mb-0 text-neutral-400 text-xs lh-1">12:30 PM</p>
-                    <span class="w-16-px h-16-px text-xs rounded-circle bg-warning-main text-white d-inline-flex align-items-center justify-content-center">8</span>
-                </div>
-            </div><!-- chat-sidebar-single end -->
         </div>
     </div>
     <div class="chat-main card">
-        <div class="chat-sidebar-single active">
+        <div class="chat-sidebar-single active" id="chat-header-user">
             <div class="img">
                 <img src="/images/chat/11.png" alt="image">
             </div>
             <div class="info">
-                <h6 class="text-md mb-0">Kathryn Murphy</h6>
+                <h6 class="text-md mb-0" id="chat-header-username">&nbsp;</h6>
                 <p class="mb-0">Available</p>
             </div>
             <div class="action d-inline-flex align-items-center gap-3">
@@ -312,32 +49,6 @@
             </div>
         </div><!-- chat-sidebar-single end -->
         <div class="chat-message-list">
-            <div class="chat-single-message left">
-                <img src="/images/chat/11.png" alt="image" class="avatar-lg object-fit-cover rounded-circle">
-                <div class="chat-message-content">
-                    <p class="mb-3">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.</p>
-                    <p class="chat-time mb-0">
-                        <span>6.30 pm</span>
-                    </p>
-                </div>
-            </div><!-- chat-single-message end -->
-            <div class="chat-single-message right">
-                <div class="chat-message-content">
-                    <p class="mb-3">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.</p>
-                    <p class="chat-time mb-0">
-                        <span>6.30 pm</span>
-                    </p>
-                </div>
-            </div><!-- chat-single-message end -->
-            <div class="chat-single-message left">
-                <img src="/images/chat/11.png" alt="image" class="avatar-lg object-fit-cover rounded-circle">
-                <div class="chat-message-content">
-                    <p class="mb-3">The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default.Contrary to popular belief, Lorem Ipsum is not simply random text is the model text for your company.</p>
-                    <p class="chat-time mb-0">
-                        <span>6.30 pm</span>
-                    </p>
-                </div>
-            </div><!-- chat-single-message end -->
         </div>
         <form class="chat-message-box">
             <input type="text" name="chatMessage" placeholder="Write message">
@@ -356,3 +67,277 @@
         </form>
     </div>
 </div>
+
+<!-- Real-time Chat Admin Panel -->
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script>
+// --- Real-time Chat Admin Panel ---
+window.socket = window.socket || io('http://localhost:4000');
+
+// State
+let messages = [];
+let users = [];
+let selectedUser = null;
+
+// DOM
+const sidebarList = document.querySelector('.chat-all-list');
+const chatWindow = document.querySelector('.chat-message-list');
+const messageForm = document.querySelector('.chat-message-box');
+const messageInput = messageForm.querySelector('input[name="chatMessage"]');
+
+// Helper: Group messages by user (assuming msg has .user or .from)
+function groupMessagesByUser(msgs) {
+  const map = {};
+  msgs.forEach(msg => {
+    const user = msg.user || msg.from || 'Unknown';
+    if (!map[user]) map[user] = [];
+    map[user].push(msg);
+  });
+  return map;
+}
+
+// Helper: Render sidebar
+function renderSidebar() {
+  const grouped = groupMessagesByUser(messages);
+  users = Object.keys(grouped).filter(u => u.trim().toLowerCase() !== ADMIN_NAME.trim().toLowerCase());
+  sidebarList.innerHTML = '';
+  users.forEach(user => {
+    const lastMsg = grouped[user][grouped[user].length - 1];
+    const active = user === selectedUser ? 'active' : '';
+    sidebarList.innerHTML += `
+      <div class="chat-sidebar-single ${active}" data-user="${user}">
+        <div class="img">
+          <img src="/images/chat/2.png" alt="image">
+        </div>
+        <div class="info">
+          <h6 class="text-md mb-0">${user}</h6>
+          <p class="mb-0">${lastMsg.message || ''}</p>
+        </div>
+        <div class="action">
+          <div class="btn-group">
+            <button type="button" class="text-secondary-light text-xl" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+              <iconify-icon icon="bi:three-dots"></iconify-icon>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-lg-end border">
+              <li>
+                <a href="/chat-profile?user=${encodeURIComponent(user)}" class="dropdown-item rounded text-secondary-light bg-hover-neutral-200 text-hover-neutral-900 d-flex align-items-center gap-2">
+                  <iconify-icon icon="fluent:person-32-regular"></iconify-icon>
+                  Profile
+                </a>
+              </li>
+              <li>
+                <a href="/chat-profile?user=${encodeURIComponent(user)}&tab=settings" class="dropdown-item rounded text-secondary-light bg-hover-neutral-200 text-hover-neutral-900 d-flex align-items-center gap-2">
+                  <iconify-icon icon="carbon:settings"></iconify-icon>
+                  Settings
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  // Add click listeners for the main user div (not the 3-dot button)
+  document.querySelectorAll('.chat-sidebar-single').forEach(el => {
+    if (!el.classList.contains('top-profile')) {
+      el.onclick = (e) => {
+        // Only trigger if not clicking the 3-dot button
+        if (!e.target.closest('.action')) {
+          selectedUser = el.getAttribute('data-user');
+          renderSidebar();
+          renderChatWindow();
+          updateChatHeader();
+          updateProfileLinks();
+        }
+      };
+    }
+  });
+
+  // Initialize Bootstrap dropdowns for all .chat-all-list .dropdown-toggle
+  if (window.bootstrap && window.bootstrap.Dropdown) {
+    document.querySelectorAll('.chat-all-list .text-xl[data-bs-toggle="dropdown"]').forEach(btn => {
+      // Remove any previous dropup
+      btn.closest('.btn-group').classList.remove('dropup');
+      // Detect if near bottom
+      const rect = btn.getBoundingClientRect();
+      const sidebarRect = sidebarList.getBoundingClientRect();
+      // If the button is in the bottom 120px of the sidebar, make it a dropup
+      if (rect.bottom + 120 > sidebarRect.bottom) {
+        btn.closest('.btn-group').classList.add('dropup');
+      }
+      new window.bootstrap.Dropdown(btn);
+    });
+  }
+}
+
+// Helper: Render chat window
+function renderChatWindow() {
+  chatWindow.innerHTML = '';
+  if (!selectedUser) return;
+  // Filter all messages for this conversation
+  const conversation = messages.filter(msg =>
+    (msg.user === selectedUser && !msg.isAdmin) || // user messages
+    (msg.to === selectedUser && msg.isAdmin)       // admin replies to this user
+  );
+  conversation.forEach(msg => {
+    const isAdmin = msg.isAdmin;
+    chatWindow.innerHTML += `
+      <div class="chat-single-message ${isAdmin ? 'right' : 'left'}">
+        ${!isAdmin ? '<img src="/images/chat/11.png" alt="image" class="avatar-lg object-fit-cover rounded-circle">' : ''}
+        <div class="chat-message-content">
+          <p class="mb-3">${msg.message}</p>
+          <p class="chat-time mb-0"><span>${msg.time || ''}</span></p>
+        </div>
+      </div>
+    `;
+  });
+  chatWindow.scrollTop = chatWindow.scrollHeight;
+  updateChatHeader();
+  updateProfileLinks();
+}
+
+// Listen for all messages on join
+window.socket.emit('admin-join');
+window.socket.on('support-messages', (msgs) => {
+  messages = msgs;
+  // Default: select first user
+  const grouped = groupMessagesByUser(messages);
+  selectedUser = Object.keys(grouped)[0] || null;
+  renderSidebar();
+  renderChatWindow();
+});
+
+// Listen for new messages
+window.socket.on('new-support-message', (msg) => {
+  messages.push(msg);
+  // Only auto-select if the message is from a new user (not admin)
+  const msgUser = msg.user || msg.from;
+  if (!users.includes(msgUser) && msgUser !== ADMIN_NAME) {
+    selectedUser = msgUser;
+  }
+  renderSidebar();
+  renderChatWindow();
+});
+
+// Send message (reply)
+messageForm.onsubmit = function(e) {
+  e.preventDefault();
+  if (!selectedUser || !messageInput.value.trim()) return;
+  const msg = {
+    user: ADMIN_NAME,
+    to: selectedUser,
+    message: messageInput.value,
+    time: new Date().toLocaleTimeString(),
+    isAdmin: true
+  };
+  window.socket.emit('support-message', msg);
+  // Do NOT push to messages here; wait for new-support-message event
+  messageInput.value = '';
+};
+
+const ADMIN_NAME = '<%= adminName %>';
+
+function updateChatHeader() {
+  const headerName = document.getElementById('chat-header-username');
+  if (headerName) headerName.textContent = selectedUser || '';
+}
+
+window.updateProfileLinks = function() {
+  var user = selectedUser || '';
+  var profileLink = document.getElementById('chat-profile-link');
+  var settingsLink = document.getElementById('chat-settings-link');
+  if (profileLink) profileLink.setAttribute('href', '/chat-profile?user=' + encodeURIComponent(user));
+  if (settingsLink) settingsLink.setAttribute('href', '/chat-profile?user=' + encodeURIComponent(user) + '&tab=settings');
+}
+
+// Add this function for the user menu
+window.showUserMenu = function(event, user) {
+  event.stopPropagation(); // Prevent triggering the parent div's click
+  // Remove any existing menus
+  const existingMenu = document.querySelector('.user-dropdown-menu');
+  if (existingMenu) existingMenu.remove();
+  // Create and show the menu
+  const menu = document.createElement('div');
+  menu.className = 'user-dropdown-menu';
+  menu.innerHTML = `
+    <ul class="dropdown-menu dropdown-menu-lg-end border" style="display: block; position: absolute; margin: 0;">
+      <li>
+        <a href="/chat-profile?user=${encodeURIComponent(user)}" class="dropdown-item rounded text-secondary-light bg-hover-neutral-200 text-hover-neutral-900 d-flex align-items-center gap-2">
+          <iconify-icon icon="fluent:person-32-regular"></iconify-icon>
+          Profile
+        </a>
+      </li>
+    </ul>
+  `;
+  // Position the menu next to the button
+  const button = event.currentTarget;
+  const rect = button.getBoundingClientRect();
+  menu.style.position = 'fixed';
+  menu.style.top = `${rect.bottom + 4}px`;
+  menu.style.left = `${rect.left - 40}px`;
+  menu.style.zIndex = '9999';
+  // Add to document
+  document.body.appendChild(menu);
+  // Close menu when clicking outside
+  document.addEventListener('click', function closeMenu(e) {
+    if (!e.target.closest('.user-dropdown-menu') && !e.target.closest('.action')) {
+      menu.remove();
+      document.removeEventListener('click', closeMenu);
+    }
+  });
+}
+
+// Add the necessary CSS
+const style = document.createElement('style');
+style.textContent = `
+  .user-dropdown-menu {
+    position: absolute;
+    z-index: 9999;
+    min-width: 180px;
+    background: #232b3e;
+    border: 1px solid #2e3951;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    padding: 0;
+    margin-top: 8px;
+    overflow: hidden;
+  }
+  .user-dropdown-menu .dropdown-menu {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    min-width: 100%;
+  }
+  .user-dropdown-menu .dropdown-item {
+    background: transparent;
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 1rem;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .user-dropdown-menu .dropdown-item:hover, .user-dropdown-menu .dropdown-item:focus {
+    background: #2e3951;
+    color: #fff;
+  }
+  .user-dropdown-menu .dropdown-item:active {
+    background: #1a2031;
+    color: #fff;
+  }
+`;
+document.head.appendChild(style);
+
+// For notification dropdown, use this filtered array:
+const userMessages = messages.filter(msg => !msg.isAdmin && msg.user !== ADMIN_NAME);
+// Use userMessages for notification display
+// Example:
+// userMessages.forEach(msg => { /* render notification item */ });
+</script>
+
+

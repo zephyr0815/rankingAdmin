@@ -1,3 +1,4 @@
+<% var profileUser = typeof profileUser !== 'undefined' ? profileUser : 'User'; %>
 
 <div class="chat-wrapper">
     <div class="chat-sidebar profile-setting card">
@@ -11,8 +12,8 @@
                 <img src="/images/chat/chat-main.png" alt="image">
             </div>
             <div class="text-center">
-                <h6 class="text-md mb-0">Kathryn Murphy</h6>
-                <p class="mb-0 text-sm">Admin</p>
+                <h6 class="text-md mb-0"><%= profileUser %></h6>
+                <p class="mb-0 text-sm">User</p>
             </div>
         </div>
         <div class="mt-24">
@@ -83,7 +84,7 @@
                 <img src="/images/chat/11.png" alt="image">
             </div>
             <div class="info">
-                <h6 class="text-md mb-0">Kathryn Murphy</h6>
+                <h6 class="text-md mb-0"><%= profileUser %></h6>
                 <p class="mb-0">Available</p>
             </div>
             <div class="action d-inline-flex align-items-center gap-3">
@@ -115,32 +116,6 @@
             </div>
         </div><!-- chat-sidebar-single end -->
         <div class="chat-message-list">
-            <div class="chat-single-message left">
-                <img src="/images/chat/11.png" alt="image" class="avatar-lg object-fit-cover rounded-circle">
-                <div class="chat-message-content">
-                    <p class="mb-3">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.</p>
-                    <p class="chat-time mb-0">
-                        <span>6.30 pm</span>
-                    </p>
-                </div>
-            </div><!-- chat-single-message end -->
-            <div class="chat-single-message right">
-                <div class="chat-message-content">
-                    <p class="mb-3">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.</p>
-                    <p class="chat-time mb-0">
-                        <span>6.30 pm</span>
-                    </p>
-                </div>
-            </div><!-- chat-single-message end -->
-            <div class="chat-single-message left">
-                <img src="/images/chat/11.png" alt="image" class="avatar-lg object-fit-cover rounded-circle">
-                <div class="chat-message-content">
-                    <p class="mb-3">The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default.Contrary to popular belief, Lorem Ipsum is not simply random text is the model text for your company.</p>
-                    <p class="chat-time mb-0">
-                        <span>6.30 pm</span>
-                    </p>
-                </div>
-            </div><!-- chat-single-message end -->
         </div>
         <form class="chat-message-box">
             <input type="text" name="chatMessage" placeholder="Write message">
@@ -159,4 +134,45 @@
         </form>
     </div>
 </div>
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script>
+const profileUser = '<%= profileUser %>';
+const chatWindow = document.querySelector('.chat-message-list');
+let profileMessages = [];
+
+function renderProfileMessages(msgs) {
+  chatWindow.innerHTML = '';
+  msgs.forEach(msg => {
+    const isAdmin = msg.isAdmin;
+    chatWindow.innerHTML += `
+      <div class="chat-single-message ${isAdmin ? 'right' : 'left'}">
+        ${!isAdmin ? '<img src="/images/chat/11.png" alt="image" class="avatar-lg object-fit-cover rounded-circle">' : ''}
+        <div class="chat-message-content">
+          <p class="mb-3">${msg.message}</p>
+          <p class="chat-time mb-0"><span>${msg.time || ''}</span></p>
+        </div>
+      </div>
+    `;
+  });
+  chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+// Listen for all messages on join
+window.socket.emit('admin-join');
+window.socket.on('support-messages', (msgs) => {
+  // Filter messages for this user only (case-insensitive, trimmed)
+  profileMessages = msgs.filter(msg =>
+    ((msg.user || msg.from || '').trim().toLowerCase() === profileUser.trim().toLowerCase())
+  );
+  renderProfileMessages(profileMessages);
+});
+// Listen for new messages
+window.socket.on('new-support-message', (msg) => {
+  if ((msg.user || msg.from || '').trim().toLowerCase() === profileUser.trim().toLowerCase()) {
+    profileMessages.push(msg);
+    renderProfileMessages(profileMessages);
+  }
+});
+</script>
 

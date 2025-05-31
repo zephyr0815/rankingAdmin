@@ -27,6 +27,8 @@
     "users_list": "用户列表",
     "role": "角色",
     "access": "访问",
-    "assign_role": "分配角色"
+    "assign_role": "分配角色",
+    "chat_support": "聊天支持",
+    "view_message": "查看消息"
   }
 }

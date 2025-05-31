@@ -27,6 +27,8 @@
     "users_list": "Users List",
     "role": "Role",
     "access": "Access",
-    "assign_role": "Assign Role"
+    "assign_role": "Assign Role",
+    "chat_support": "Chat Support",
+    "view_message": "View Message"
   }
 }

@@ -4,7 +4,7 @@ const expressLayouts = require("express-ejs-layouts");
 const { createProxyMiddleware } = require("http-proxy-middleware");
 const i18n = require("i18n");
 const cookieParser = require("cookie-parser");
-
+const config = require("config");
 const app = express();
 
 // ✅ i18n Configuration (no cookies)
@@ -34,6 +34,7 @@ app.use((req, res, next) => {
   if (!supported.includes(lang)) lang = i18n.getLocale();
   i18n.setLocale(req, lang);
   res.locals.currentLang = lang;
+  res.locals.apiUrl = config.get('ApiUrl');
   next();
 });
 
@@ -56,7 +57,8 @@ app.use((req, res, next) => {
 app.use(
   "/api",
   createProxyMiddleware({
-    target: "http://localhost:4000/api",  
+    // target: "http://gs.ev0-games.com:4000/api",  
+    target: config.ApiUrl + "/api",  
     changeOrigin: true,
     logLevel: "debug",
     onProxyReq:  (proxyReq, req, res) =>

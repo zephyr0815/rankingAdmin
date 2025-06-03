@@ -1,8 +1,0 @@
- 
-{
-    "NODE_ENV": "development",
-    "PORT": 4021,
-    "ApiUrl": "http://localhost:4000",
-    "SiteUrl": "http://localhost:4021"
-}
-  

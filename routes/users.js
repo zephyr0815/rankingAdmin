@@ -1,4 +1,5 @@
 const express = require('express');
+const config = require('config');
 const router = express.Router();
 
 router.get('/add-user',(req, res)=>{
@@ -10,7 +11,11 @@ router.get('/users-grid',(req, res)=>{
 });
 
 router.get('/users-list',(req, res)=>{
-    res.render('users/usersList', {title: "Users List", subTitle:"Users List"})
+    res.render('users/usersList', {
+        title: "Users List", 
+        subTitle:"Users List",
+        apiUrl: config.get('ApiUrl')
+    })
 });
 
 router.get('/view-profile',(req, res)=>{

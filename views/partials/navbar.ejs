@@ -417,7 +417,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 <script>
-  window.socket = window.socket || io('http://gs.ev0-games.com:4000');
+  window.socket = window.socket || io('<%= apiUrl %>');
   const socket = window.socket;
   
   // Join as admin to receive all messages

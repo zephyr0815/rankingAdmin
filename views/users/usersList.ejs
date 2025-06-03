@@ -266,7 +266,7 @@
     let onlineUids = [];
 
     // 2) Socket.IO client para sa online status
-    const socket = io(`http://gs.ev0-games.com:4000`, {
+    const socket = io(`<%= apiUrl %>`, {
       transports: ['websocket'],
       withCredentials: true
     });

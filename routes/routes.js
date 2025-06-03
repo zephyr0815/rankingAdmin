@@ -1,5 +1,6 @@
 // Import required modules
 const express = require("express");
+const config = require("config");
 
 // Create a router
 const router = express.Router();
@@ -38,7 +39,12 @@ router.get("/calendar", (req, res) => {
 });
 
 router.get("/chat", (req, res) => {
-  res.render("chat", { title: "Chat", subTitle: "Chat", adminName: (req.session && req.session.adminName) || 'Admin' });
+  res.render("chat", { 
+    title: "Chat", 
+    subTitle: "Chat", 
+    adminName: (req.session && req.session.adminName) || 'Admin',
+    apiUrl: config.get('ApiUrl')
+  });
 });
 
 router.get("/chat-profile", (req, res) => {

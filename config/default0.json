@@ -1,6 +1,8 @@
  
 {
     "NODE_ENV": "development",
-    "PORT": 4021
+    "PORT": 4021,
+    "ApiUrl": "http://gs.ev0-games.com:4000",
+    "SiteUrl": "http://gs.ev0-games.com:4020"
 }
   

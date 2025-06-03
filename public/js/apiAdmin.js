@@ -1,6 +1,8 @@
 // public/js/apiAdmin.js
 
 const LOCAL_ROOT = 'http://gs.ev0-games.com:4021/api';
+// const LOCAL_ROOT = 'http://localhost:4021/api';
+// const LOCAL_ROOT = config.SiteUrl + '/api';
 console.log('apiAdmin.js loaded.');
 
 // Helper to decode JWT token

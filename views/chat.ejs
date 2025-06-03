@@ -76,7 +76,7 @@
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 <script>
 // --- Real-time Chat Admin Panel ---
-window.socket = window.socket || io('http://gs.ev0-games.com:4000');
+window.socket = window.socket || io('<%= apiUrl %>');
 
 // State
 let messages = [];

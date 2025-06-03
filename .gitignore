@@ -3,6 +3,7 @@
 .settings
 .idea
 default.json
+config/default.json
 
 node_modules
 

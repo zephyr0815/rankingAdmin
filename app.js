@@ -56,7 +56,7 @@ app.use((req, res, next) => {
 app.use(
   "/api",
   createProxyMiddleware({
-    target: "http://localhost:4000/api",  
+    target: "http://gs.ev0-games.com:4000/api",  
     changeOrigin: true,
     logLevel: "debug",
     onProxyReq:  (proxyReq, req, res) =>

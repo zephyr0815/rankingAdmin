@@ -27,6 +27,8 @@
     "users_list": "ユーザー一覧",
     "role": "役割",
     "access": "アクセス",
-    "assign_role": "役割を割り当てる"
+    "assign_role": "役割を割り当てる",
+    "chat_support": "チャットサポート",
+    "view_message": "メッセージを見る"
   }
 }

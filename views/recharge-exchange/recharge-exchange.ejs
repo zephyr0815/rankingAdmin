@@ -1,276 +1,295 @@
 <div class="card basic-data-table">
-    <div class="card-header">
-        <h5 class="card-title mb-0">
-            Recharge Exchange List
-        </h5>
-    </div>
-    <div class="card-body">
-        <table class="table bordered-table mb-0" id="rechargeExchange_tbl" data-page-length='10'>
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Name</th>
-                    <th>Amount</th>
-                    <th>Request</th> 
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                  
-                </tr>
-            </tbody>
-        </table>
-    </div>
+  <div class="card-header">
+      <h5 class="card-title mb-0">
+          Recharge Exchange List
+      </h5>
+  </div>
+  <div class="card-body">
+      <table class="table bordered-table mb-0" id="rechargeExchange_tbl" data-page-length='10'>
+          <thead>
+              <tr>
+                  <th>Date</th>
+                  <th>Name</th>
+                  <th>Transaction Type</th>
+                  <th>Before Game Bal</th>
+                  <th>Request Amount</th>
+                  <th>After Game Bal</th>
+                  <th>Status</th>
+                  <th>Action</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                
+              </tr>
+          </tbody>
+      </table>
+  </div>
 </div>
 
 <style>
-    /* center everything in your rechargeExchange table */
-    #rechargeExchange_tbl th,
-    #rechargeExchange_tbl td {
-      text-align: center !important;
-      vertical-align: middle;
-    }
-  </style>
+  /* center everything in your rechargeExchange table */
+  #rechargeExchange_tbl th,
+  #rechargeExchange_tbl td {
+    text-align: center !important;
+    vertical-align: middle;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 15px;
+  }
+  #rechargeExchange_tbl {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+</style>
 
 
 
 <script type="module">
-    import { adminUser } from '/js/apiAdmin.js';
-  
-    $(async function () {
-      console.log('⏳ Starting Recharge Exchange DataTable init…');
-  
-      try {
-        console.log('📡 Fetching recharge requests…');
-        const res = await adminUser.getRechargeRequests({});
-        console.log('✅ API response:', res);
-  
-        const data = res.data || [];
-        console.log(`📊 Retrieved ${data.length} rows`);
-  
-        console.log('🛠️ Initializing DataTable…');
-        const table = $('#rechargeExchange_tbl').DataTable({
-          data,
-          pageLength: 10,
-          order: [[ 0, 'desc' ]],
-          columns: [
-          {
-      data: 'created_at',
-      render: (data, type, row, meta) => {
-        const d = new Date(data);
-        if (type === 'display' || type === 'filter') {
-          // human-readable
-          return d.toLocaleString('en-GB', {
-            month:  'short',   // “Apr”
-            day:    'numeric', // “23”
-            year:   'numeric', // “2025”
-            hour:   '2-digit',
-            minute: '2-digit',
-            hour12: true
-          }).replace(/,/g,'');
-        }
-        // for 'sort' and 'type' use the epoch ms
-        return d.getTime();
+  import { adminUser } from '/js/apiAdmin.js';
+
+  $(async function () {
+    console.log('⏳ Starting Recharge Exchange DataTable init…');
+
+    try {
+      console.log('📡 Fetching recharge requests…');
+      const res = await adminUser.getRechargeRequests({});
+      console.log('✅ API response:', res);
+
+      const data = res.data || [];
+      console.log(`📊 Retrieved ${data.length} rows`);
+
+      console.log('🛠️ Initializing DataTable…');
+      const table = $('#rechargeExchange_tbl').DataTable({
+        data,
+        pageLength: 10,
+        order: [[ 0, 'desc' ]],
+        columns: [
+        {
+    data: 'created_at',
+    render: (data, type) => {
+      const d = new Date(data);
+      if (type === 'display' || type === 'filter') {
+        return d.toLocaleString('en-GB', {
+          month:  'short',
+          day:    'numeric',
+          year:   'numeric',
+          hour:   '2-digit',
+          minute: '2-digit',
+          hour12: true
+        }).replace(/,/g,'');
       }
-    },
-            { data: 'uid' },
-            {
-              data: 'req_chip',
-              render: amt => {
-                const formatted = Number(amt).toLocaleString('en-US');
-                console.log('💰 Rendering amount:', amt, '→', formatted);
-                return formatted;
-              }
-            },
-
-            {
-            data: 'kind',
-            render: kind => {
-                // map numeric codes to labels
-                const labels = {
-                0: 'Recharge',
-                1: 'Exchange'
-                };
-                const label = labels[kind] ?? 'unknown';
-                console.log('🏷️ Rendering status badge for code:', kind, 'label:', label);
-
-                // pick class based on label
-                const cls =
-                label === 'Recharge' ? 'info'
-                : label === 'Exchange' ? 'success'
-                : 'warning';
-
-                return `
-                <span class="bg-${cls}-focus text-${cls}-main px-24 py-4 rounded-pill fw-medium text-sm">
-                    ${label}
-                </span>
-                `;
+      // For sorting and type detection, return the timestamp
+      return d.getTime();
+    }
+  },
+          { data: 'uid' },
+          {
+            // Transaction Type column
+            data: 'type',
+            render: type => {
+              const labels = { 0: 'User Balance', 1: 'User Points' };
+              // Make User Balance green, User Points orange
+              const badgeClass = type === 0 
+                ? 'bg-success-focus text-success-main' // green for User Balance
+                : 'bg-warning-focus text-warning-main'; // orange for User Points
+              return `<span class="px-24 py-4 rounded-pill fw-medium text-sm ${badgeClass}">${labels[type] || '-'}</span>`;
             }
-            },
-           
-            {
+          },
+          {
+            data: 'bf_chip',
+            render: amt => Number(amt).toLocaleString('en-US')
+          },
+          {
+            // Combine Request Chip and Type Badge
+            data: null,
+            render: row => {
+              const value = Number(row.req_chip).toLocaleString('en-US');
+              const labels = { 0: 'Recharge', 1: 'Exchange' };
+              const cls = row.kind === 0 ? 'info' : 'success';
+              return `
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                  <span style="font-size: 1.1em; font-weight: 500;">${value}</span>
+                  <span class="bg-${cls}-focus text-${cls}-main px-24 py-4 rounded-pill fw-medium text-sm mt-2">
+                    ${labels[row.kind]}
+                  </span>
+                </div>
+              `;
+            }
+          },
+          {
+            data: null,
+            render: row => {
+              let af_chip;
+              if (row.status === 2) { // Rejected
+                af_chip = row.bf_chip;
+              } else if (row.status === 0) { // Pending
+                if (row.kind === 0) { // Recharge
+                  af_chip = Number(row.bf_chip) + Number(row.req_chip);
+                } else if (row.kind === 1) { // Exchange
+                  af_chip = Number(row.bf_chip) - Number(row.req_chip);
+                }
+              } else {
+                af_chip = row.af_chip; // Approved or fallback
+              }
+              return Number(af_chip).toLocaleString('en-US');
+            }
+          },
+          {
             data: 'status',
             render: status => {
-                // map numeric codes to labels
-                const labels = {
-                0: 'Pending',
-                1: 'Approved',
-                2: 'Rejected'
-                };
-                const label = labels[status] ?? 'unknown';
-                console.log('🏷️ Rendering status badge for code:', status, 'label:', label);
-
-                // pick class based on label
-                const cls =
-                label === 'Approved' ? 'success'
-                : label === 'Rejected' ? 'danger'
-                : 'warning';
-
-                return `
-                <span class="bg-${cls}-focus text-${cls}-main px-24 py-4 rounded-pill fw-medium text-sm">
-                    ${label}
-                </span>
-                `;
+              const labels = { 0: 'Pending', 1: 'Approved', 2: 'Rejected' };
+              const cls = status === 1 ? 'success' : status === 2 ? 'danger' : 'warning';
+              return `<span class="bg-${cls}-focus text-${cls}-main px-24 py-4 rounded-pill fw-medium text-sm">${labels[status]}</span>`;
             }
-            },
-            {
-                data: null,
-                orderable: false,
-                render: row => {
-                    console.log('🔧 Rendering action buttons for row idx:', row.idx, 'status:', row.status);
-                    const isFinal = row.status === 1 || row.status === 2;
+          },
+          {
+              data: null,
+              orderable: false,
+              render: row => {
+                  // If status is Approved or Rejected, show info icon only
+                  if (row.status === 1 || row.status === 2) {
+                      return `
+                          <span class="info-icon" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;">
+                              <iconify-icon icon="mdi:information" width="28" height="28" style="color:#666;"></iconify-icon>
+                          </span>
+                      `;
+                  }
 
-                    const approveClasses = [
-                    'approve-btn',
-                    'w-32-px','h-32-px',
-                    'bg-success-focus','text-success-600',
-                    'rounded-circle','d-inline-flex','align-items-center','justify-content-center'
-                    ].join(' ');
-                    const rejectClasses = [
-                    'reject-btn',
-                    'w-32-px','h-32-px',
-                    'bg-danger-focus','text-danger-main',
-                    'rounded-circle','d-inline-flex','align-items-center','justify-content-center'
-                    ].join(' ');
+                  // Otherwise, show approve/reject buttons
+                  const approveClasses = [
+                      'approve-btn',
+                      'w-32-px','h-32-px',
+                      'bg-success-focus','text-success-600',
+                      'rounded-circle','d-inline-flex','align-items-center','justify-content-center'
+                  ].join(' ');
+                  const rejectClasses = [
+                      'reject-btn',
+                      'w-32-px','h-32-px',
+                      'bg-danger-focus','text-danger-main',
+                      'rounded-circle','d-inline-flex','align-items-center','justify-content-center'
+                  ].join(' ');
 
-                    const disabledAttrs = isFinal
-                    ? 'style="opacity:0.5;pointer-events:none;"'
-                    : '';
+                  return `
+                      <a href="javascript:void(0)" data-id="${row.idx}" class="${approveClasses}">
+                          <iconify-icon icon="iconamoon:check"></iconify-icon>
+                      </a>
+                      <a href="javascript:void(0)" data-id="${row.idx}" class="${rejectClasses}">
+                          <iconify-icon icon="lucide:x"></iconify-icon>
+                      </a>
+                  `;
+              }
+              }
 
-                    return `
-                    <a href="javascript:void(0)" data-id="${row.idx}" class="${approveClasses}" ${disabledAttrs}>
-                        <iconify-icon icon="iconamoon:check"></iconify-icon>
-                    </a>
-                    <a href="javascript:void(0)" data-id="${row.idx}" class="${rejectClasses}" ${disabledAttrs}>
-                        <iconify-icon icon="lucide:x"></iconify-icon>
-                    </a>
-                    `;
-                }
-                }
+        ]
+      });
+      console.log('✅ DataTable initialized:', table);
 
-          ]
-        });
-        console.log('✅ DataTable initialized:', table);
-  
-        // action handlers
-            // Approve handler with Swal
-        $('#rechargeExchange_tbl').on('click', '.approve-btn', async function () {
-        const id    = $(this).data('id');
-        const $tr   = $(this).closest('tr');
-        const row   = table.row($tr);
-        const data  = row.data();
+      // action handlers
+          // Approve handler with Swal
+      $('#rechargeExchange_tbl').on('click', '.approve-btn', async function () {
+      const id    = $(this).data('id');
+      const $tr   = $(this).closest('tr');
+      const row   = table.row($tr);
+      const data  = row.data();
 
-        const result = await Swal.fire({
-            title: 'Approve this request?',
-            text: 'This will add the requested amount to the user’s balance.',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, approve',
-            cancelButtonText: 'Cancel',
-            reverseButtons: true
-        });
+      const result = await Swal.fire({
+          title: 'Approve this request?',
+          text: 'This will add the requested amount to the users balance.',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, approve',
+          cancelButtonText: 'Cancel',
+          reverseButtons: true
+      });
 
-        if (!result.isConfirmed) return;
+      if (!result.isConfirmed) return;
 
-        try {
-            await adminUser.approveRecharge(id);
-            Swal.fire({
-            icon: 'success',
-            title: 'Approved!',
-            text: 'The recharge has been approved.'
-            });
+      try {
+          await adminUser.approveRecharge(id);
+          Swal.fire({
+          icon: 'success',
+          title: 'Approved!',
+          text: 'The recharge has been approved.'
+          });
 
-            // 1) Update the status field in the row's data
-            data.status = 1;
+          // 1) Update the status field in the row's data
+          data.status = 1;
 
-            // 2) Invalidate the row's cache, write new data, and redraw just that row
-            row.data(data).invalidate().draw(false);
+          // 2) Update af_chip in the row's data
+          if (data.kind === 0) { // Recharge
+            data.af_chip = Number(data.bf_chip) + Number(data.req_chip);
+          } else if (data.kind === 1) { // Exchange
+            data.af_chip = Number(data.bf_chip) - Number(data.req_chip);
+          }
 
-        } catch (e) {
-            console.error('❌ approveRecharge error:', e);
-            Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: e.message || 'Failed to approve request.'
-            });
-        }
-        });
+          // 3) Invalidate the row's cache, write new data, and redraw just that row
+          row.data(data).invalidate().draw(false);
+
+      } catch (e) {
+          console.error('❌ approveRecharge error:', e);
+          Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: e.message || 'Failed to approve request.'
+          });
+      }
+      });
 
 
-  
-        $('#rechargeExchange_tbl').on('click', '.reject-btn', async function () {
-  const id   = $(this).data('id');
-  const $tr  = $(this).closest('tr');
-  const row  = table.row($tr);
-  const data = row.data();
 
-  const result = await Swal.fire({
-    title: 'Reject this request?',
-    text: 'This will mark the recharge as rejected.',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonText: 'Yes, reject',
-    cancelButtonText: 'Cancel',
-    reverseButtons: true
+      $('#rechargeExchange_tbl').on('click', '.reject-btn', async function () {
+const id   = $(this).data('id');
+const $tr  = $(this).closest('tr');
+const row  = table.row($tr);
+const data = row.data();
+
+const result = await Swal.fire({
+  title: 'Reject this request?',
+  text: 'This will mark the recharge as rejected.',
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonText: 'Yes, reject',
+  cancelButtonText: 'Cancel',
+  reverseButtons: true
+});
+if (!result.isConfirmed) return;
+
+try {
+  await adminUser.rejectRecharge(id);
+  await Swal.fire({
+    icon: 'success',
+    title: 'Rejected!',
+    text: 'The recharge has been rejected.'
   });
-  if (!result.isConfirmed) return;
 
-  try {
-    await adminUser.rejectRecharge(id);
-    await Swal.fire({
-      icon: 'success',
-      title: 'Rejected!',
-      text: 'The recharge has been rejected.'
-    });
+  // 1) Update the status field in the row's data
+  data.status = 2;
+  // 2) Set af_chip to bf_chip (no change)
+  data.af_chip = data.bf_chip;
+  // 3) Invalidate the row's cache, write new data, and redraw just that row
+  row.data(data).invalidate().draw(false);
 
-    // 1) Update the status field in the row's data
-    data.status = 2;
-
-    // 2) Invalidate the row's cache, write new data, and redraw just that row
-    row.data(data).invalidate().draw(false);
-
-  } catch (e) {
-    console.error('❌ rejectRecharge error:', e);
-    Swal.fire({
-      icon: 'error',
-      title: 'Error',
-      text: e.message || 'Failed to reject request.'
-    });
-  }
+} catch (e) {
+  console.error('❌ rejectRecharge error:', e);
+  Swal.fire({
+    icon: 'error',
+    title: 'Error',
+    text: e.message || 'Failed to reject request.'
+  });
+}
 });
 
-  
-        $('#rechargeExchange_tbl').on('click', '.delete-btn', function () {
-          const id = $(this).data('id');
-          console.log('🗑️ Delete clicked for id=', id);
-          // implement your delete logic here…
-        });
-  
-      } catch (err) {
-        console.error('❌ Error loading recharge list:', err);
-        alert(err.message || 'Failed to load data.');
-      }
-    });
-  </script>
+
+      $('#rechargeExchange_tbl').on('click', '.delete-btn', function () {
+        const id = $(this).data('id');
+        console.log('🗑️ Delete clicked for id=', id);
+        // implement your delete logic here…
+      });
+
+    } catch (err) {
+      console.error('❌ Error loading recharge list:', err);
+      alert(err.message || 'Failed to load data.');
+    }
+  });
+</script>

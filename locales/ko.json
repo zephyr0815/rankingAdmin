@@ -27,6 +27,8 @@
     "users_list": "사용자 목록",
     "role": "역할",
     "access": "접근",
-    "assign_role": "역할 할당"
+    "assign_role": "역할 할당",
+    "chat_support": "채팅 지원",
+    "view_message": "메시지 보기"
   }
 }

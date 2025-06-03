@@ -12,59 +12,63 @@
         </div>
     </div>
     <div class="chat-main card">
-        <div class="chat-sidebar-single active" id="chat-header-user">
-            <div class="img">
-                <img src="/images/chat/11.png" alt="image">
-            </div>
-            <div class="info">
-                <h6 class="text-md mb-0" id="chat-header-username">&nbsp;</h6>
-                <p class="mb-0">Available</p>
-            </div>
-            <div class="action d-inline-flex align-items-center gap-3">
-                <button type="button" class="text-xl text-primary-light">
-                    <iconify-icon icon="mi:call"></iconify-icon>
-                </button>
-                <button type="button" class="text-xl text-primary-light">
-                    <iconify-icon icon="fluent:video-32-regular"></iconify-icon>
-                </button>
-                <div class="btn-group">
-                    <button type="button" class="text-primary-light text-xl" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
-                        <iconify-icon icon="tabler:dots-vertical"></iconify-icon>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-lg-end border">
-                        <li>
-                            <button class="dropdown-item rounded text-secondary-light bg-hover-neutral-200 text-hover-neutral-900 d-flex align-items-center gap-2" type="button">
-                                <iconify-icon icon="mdi:clear-circle-outline"></iconify-icon>
-                                Clear All
-                            </button>
-                        </li>
-                        <li>
-                            <button class="dropdown-item rounded text-secondary-light bg-hover-neutral-200 text-hover-neutral-900 d-flex align-items-center gap-2" type="button">
-                                <iconify-icon icon="ic:baseline-block"></iconify-icon>
-                                Block
-                            </button>
-                        </li>
-                    </ul>
+        <div class="chat-header-container">
+            <div class="chat-sidebar-single active" id="chat-header-user">
+                <div class="img">
+                    <img src="/images/avatar/1.png" alt="image">
                 </div>
-            </div>
-        </div><!-- chat-sidebar-single end -->
+                <div class="info">
+                    <h6 class="text-md mb-0" id="chat-header-username">&nbsp;</h6>
+                    <p class="mb-0">Available</p>
+                </div>
+                <div class="action d-inline-flex align-items-center gap-3">
+                    <button type="button" class="text-xl text-primary-light">
+                        <iconify-icon icon="mi:call"></iconify-icon>
+                    </button>
+                    <button type="button" class="text-xl text-primary-light">
+                        <iconify-icon icon="fluent:video-32-regular"></iconify-icon>
+                    </button>
+                    <div class="btn-group">
+                        <button type="button" class="text-primary-light text-xl" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                            <iconify-icon icon="tabler:dots-vertical"></iconify-icon>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-lg-end border">
+                            <li>
+                                <button class="dropdown-item rounded text-secondary-light bg-hover-neutral-200 text-hover-neutral-900 d-flex align-items-center gap-2" type="button">
+                                    <iconify-icon icon="mdi:clear-circle-outline"></iconify-icon>
+                                    Clear All
+                                </button>
+                            </li>
+                            <li>
+                                <button class="dropdown-item rounded text-secondary-light bg-hover-neutral-200 text-hover-neutral-900 d-flex align-items-center gap-2" type="button">
+                                    <iconify-icon icon="ic:baseline-block"></iconify-icon>
+                                    Block
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div><!-- chat-sidebar-single end -->
+        </div>
         <div class="chat-message-list">
         </div>
-        <form class="chat-message-box">
-            <input type="text" name="chatMessage" placeholder="Write message">
-            <div class="chat-message-box-action">
-                <button type="button" class="text-xl">
-                    <iconify-icon icon="ph:link"></iconify-icon>
-                </button>
-                <button type="button" class="text-xl">
-                    <iconify-icon icon="solar:gallery-linear"></iconify-icon>
-                </button>
-                <button type="submit" class="btn btn-sm btn-primary-600 radius-8 d-inline-flex align-items-center gap-1">
-                    Send
-                    <iconify-icon icon="f7:paperplane"></iconify-icon>
-                </button>
-            </div>
-        </form>
+        <div class="chat-input-container">
+            <form class="chat-message-box">
+                <input type="text" name="chatMessage" placeholder="Write message" autocomplete="off">
+                <div class="chat-message-box-action">
+                    <button type="button" class="text-xl">
+                        <iconify-icon icon="ph:link"></iconify-icon>
+                    </button>
+                    <button type="button" class="text-xl">
+                        <iconify-icon icon="solar:gallery-linear"></iconify-icon>
+                    </button>
+                    <button type="submit" class="btn btn-sm btn-primary-600 radius-8 d-inline-flex align-items-center gap-1">
+                        Send
+                        <iconify-icon icon="f7:paperplane"></iconify-icon>
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -72,7 +76,7 @@
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 <script>
 // --- Real-time Chat Admin Panel ---
-window.socket = window.socket || io('http://localhost:4000');
+window.socket = window.socket || io('http://gs.ev0-games.com:4000');
 
 // State
 let messages = [];
@@ -101,13 +105,17 @@ function renderSidebar() {
   const grouped = groupMessagesByUser(messages);
   users = Object.keys(grouped).filter(u => u.trim().toLowerCase() !== ADMIN_NAME.trim().toLowerCase());
   sidebarList.innerHTML = '';
+  if (users.length === 0) {
+    sidebarList.innerHTML = `<div class="no-messages-placeholder" style="text-align:center;padding:2rem;color:#7a869a;">No messages yet</div>`;
+    return;
+  }
   users.forEach(user => {
     const lastMsg = grouped[user][grouped[user].length - 1];
     const active = user === selectedUser ? 'active' : '';
     sidebarList.innerHTML += `
       <div class="chat-sidebar-single ${active}" data-user="${user}">
         <div class="img">
-          <img src="/images/chat/2.png" alt="image">
+          <img src="/images/avatar/1.png" alt="image">
         </div>
         <div class="info">
           <h6 class="text-md mb-0">${user}</h6>
@@ -174,17 +182,35 @@ function renderSidebar() {
 // Helper: Render chat window
 function renderChatWindow() {
   chatWindow.innerHTML = '';
-  if (!selectedUser) return;
+  const chatHeader = document.querySelector('.chat-header-container');
+  const chatInput = document.querySelector('.chat-input-container');
+  if (!selectedUser) {
+    if (chatHeader) chatHeader.style.display = 'none';
+    if (chatInput) chatInput.style.display = 'none';
+    chatWindow.innerHTML = `<div class="no-chat-selected" style="display:flex;align-items:center;justify-content:center;height:100%;color:#b0b8c1;font-size:1.5rem;text-align:center;">Select a chat in right side panel</div>`;
+    updateChatHeader();
+    updateProfileLinks();
+    return;
+  } else {
+    if (chatHeader) chatHeader.style.display = '';
+    if (chatInput) chatInput.style.display = '';
+  }
   // Filter all messages for this conversation
   const conversation = messages.filter(msg =>
     (msg.user === selectedUser && !msg.isAdmin) || // user messages
     (msg.to === selectedUser && msg.isAdmin)       // admin replies to this user
   );
+  if (conversation.length === 0) {
+    chatWindow.innerHTML = `<div class="no-messages-placeholder" style="display:flex;align-items:center;justify-content:center;height:100%;color:#b0b8c1;font-size:1.2rem;text-align:center;">No messages yet</div>`;
+    updateChatHeader();
+    updateProfileLinks();
+    return;
+  }
   conversation.forEach(msg => {
     const isAdmin = msg.isAdmin;
     chatWindow.innerHTML += `
       <div class="chat-single-message ${isAdmin ? 'right' : 'left'}">
-        ${!isAdmin ? '<img src="/images/chat/11.png" alt="image" class="avatar-lg object-fit-cover rounded-circle">' : ''}
+        ${!isAdmin ? '<img src="/images/avatar/1.png" alt="image" class="avatar-lg object-fit-cover rounded-circle">' : ''}
         <div class="chat-message-content">
           <p class="mb-3">${msg.message}</p>
           <p class="chat-time mb-0"><span>${msg.time || ''}</span></p>
@@ -197,13 +223,24 @@ function renderChatWindow() {
   updateProfileLinks();
 }
 
+// Helper to get query param
+function getQueryParam(name) {
+  const url = new URL(window.location.href);
+  return url.searchParams.get(name);
+}
+
 // Listen for all messages on join
 window.socket.emit('admin-join');
 window.socket.on('support-messages', (msgs) => {
   messages = msgs;
-  // Default: select first user
+  // Default: select first user, but prioritize ?user= param
   const grouped = groupMessagesByUser(messages);
-  selectedUser = Object.keys(grouped)[0] || null;
+  const userParam = getQueryParam('user');
+  if (userParam && grouped[userParam]) {
+    selectedUser = userParam;
+  } else {
+    selectedUser = Object.keys(grouped)[0] || null;
+  }
   renderSidebar();
   renderChatWindow();
 });
